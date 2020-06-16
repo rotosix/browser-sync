@@ -10,19 +10,19 @@ var logger = require("../logger").logger;
  * @param opts
  * @returns {Function}
  */
-module.exports = function(opts) {
+module.exports = function (opts) {
     var path = require("path");
     var fs = require("fs-extra");
     var input = opts.cli.input.slice(1);
     var resolved = require.resolve("bs-recipes");
     var dir = path.dirname(resolved);
 
-    var logRecipes = function() {
+    var logRecipes = function () {
         var dirs = fs.readdirSync(path.join(dir, "recipes"));
         logger.info(
             "Install one of the following with {cyan:browser-sync recipe <name>\n"
         );
-        dirs.forEach(function(name) {
+        dirs.forEach(function (name) {
             console.log("    " + name);
         });
     };
@@ -52,7 +52,7 @@ module.exports = function(opts) {
     }
 
     if (fs.existsSync(targetDir)) {
-        fs.copy(targetDir, output, function(err) {
+        fs.copy(targetDir, output, function (err) {
             if (err) {
                 opts.cb(err);
             } else {

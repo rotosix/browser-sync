@@ -13,7 +13,7 @@ var info = {
      * @param {Object} pjson
      * @returns {String}
      */
-    getVersion: function(pjson) {
+    getVersion: function (pjson) {
         console.log(pjson.version);
         return pjson.version;
     },
@@ -23,19 +23,19 @@ var info = {
      * @private
      * @param filePath
      */
-    getConfigFile: function(filePath) {
+    getConfigFile: function (filePath) {
         return require(path.resolve(filePath));
     },
     /**
      * Generate an example Config file.
      */
-    makeConfig: function(cwd, cb) {
+    makeConfig: function (cwd, cb) {
         var opts = require(path.join(__dirname, "..", config.configFile));
         var userOpts = {};
 
         var ignore = ["excludedFileTypes", "injectFileTypes", "snippetOptions"];
 
-        Object.keys(opts).forEach(function(key) {
+        Object.keys(opts).forEach(function (key) {
             if (!_.includes(ignore, key)) {
                 userOpts[key] = opts[key];
             }
@@ -44,7 +44,7 @@ var info = {
         var file = fs.readFileSync(config.template, "utf8");
         file = file.replace("//OPTS", JSON.stringify(userOpts, null, 4));
 
-        fs.writeFile(path.resolve(cwd, config.userFile), file, function() {
+        fs.writeFile(path.resolve(cwd, config.userFile), file, function () {
             logger.info("Config file created {magenta:%s}", config.userFile);
             logger.info(
                 "To use it, in the same directory run: " +
@@ -52,7 +52,7 @@ var info = {
             );
             cb();
         });
-    }
+    },
 };
 
 module.exports = info;

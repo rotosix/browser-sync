@@ -31,7 +31,7 @@ function getCa(options) {
     }
     // if an array was given, read all
     if (List.isList(caOption)) {
-        return caOption.toArray().map(function(x) {
+        return caOption.toArray().map(function (x) {
             return fs.readFileSync(x);
         });
     }
@@ -54,13 +54,13 @@ function getHttpsServerDefaults(options) {
         key: getKey(options),
         cert: getCert(options),
         ca: getCa(options),
-        passphrase: ""
+        passphrase: "",
     });
 }
 
 function getPFXDefaults(options) {
     return fromJS({
-        pfx: fs.readFileSync(options.getIn(["https", "pfx"]))
+        pfx: fs.readFileSync(options.getIn(["https", "pfx"])),
     });
 }
 
@@ -69,7 +69,7 @@ var serverUtils = {
      * @param options
      * @returns {{key, cert}}
      */
-    getHttpsOptions: function(options) {
+    getHttpsOptions: function (options) {
         var userOption = options.get("https");
         if (Map.isMap(userOption)) {
             if (userOption.has("pfx")) {
@@ -83,9 +83,9 @@ var serverUtils = {
      * Get either http or https server
      * or use the httpModule provided in options if present
      */
-    getServer: function(app, options) {
+    getServer: function (app, options) {
         return {
-            server: (function() {
+            server: (function () {
                 var httpModule = serverUtils.getHttpModule(options);
 
                 if (
@@ -98,10 +98,10 @@ var serverUtils = {
 
                 return httpModule.createServer(app);
             })(),
-            app: app
+            app: app,
         };
     },
-    getHttpModule: function(options) {
+    getHttpModule: function (options) {
         /**
          * Users may provide a string to be used by nodes
          * require lookup.
@@ -123,10 +123,10 @@ var serverUtils = {
 
         return http;
     },
-    getMiddlewares: function(bs) {
+    getMiddlewares: function (bs) {
         var clientJs = bs.pluginManager.hook("client:js", {
             port: bs.options.get("port"),
-            options: bs.options
+            options: bs.options,
         });
 
         var scripts = bs.pluginManager.get("client:script")(
@@ -139,30 +139,30 @@ var serverUtils = {
             {
                 id: "Browsersync HTTP Protocol",
                 route: require("../config").httpProtocol.path,
-                handle: require("../http-protocol").middleware(bs)
+                handle: require("../http-protocol").middleware(bs),
             },
             {
                 id: "Browsersync IE8 Support",
                 route: "",
                 handle: snippet.isOldIe(
                     bs.options.get("excludedFileTypes").toJS()
-                )
+                ),
             },
             {
                 id: "Browsersync Response Modifier",
                 route: "",
-                handle: serverUtils.getSnippetMiddleware(bs)
+                handle: serverUtils.getSnippetMiddleware(bs),
             },
             {
                 id: "Browsersync Client - versioned",
                 route: bs.options.getIn(["scriptPaths", "versioned"]),
-                handle: scripts
+                handle: scripts,
             },
             {
                 id: "Browsersync Client",
                 route: bs.options.getIn(["scriptPaths", "path"]),
-                handle: scripts
-            }
+                handle: scripts,
+            },
         ];
 
         /**
@@ -173,7 +173,7 @@ var serverUtils = {
             defaultMiddlewares.unshift({
                 id: "Browsersync CORS support",
                 route: "",
-                handle: serverUtils.getCorsMiddlewware()
+                handle: serverUtils.getCorsMiddlewware(),
             });
         }
 
@@ -184,7 +184,7 @@ var serverUtils = {
             defaultMiddlewares.unshift({
                 id: "Browsersync SPA support",
                 route: "",
-                handle: require("connect-history-api-fallback")()
+                handle: require("connect-history-api-fallback")(),
             });
         }
 
@@ -196,15 +196,15 @@ var serverUtils = {
                 bs.options.get("serveStatic"),
                 bs.options.get("serveStaticOptions", Immutable.Map({})).toJS()
             );
-            var withErrors = ssMiddlewares.filter(function(x) {
+            var withErrors = ssMiddlewares.filter(function (x) {
                 return x.get("errors").size > 0;
             });
-            var withoutErrors = ssMiddlewares.filter(function(x) {
+            var withoutErrors = ssMiddlewares.filter(function (x) {
                 return x.get("errors").size === 0;
             });
 
             if (withErrors.size) {
-                withErrors.forEach(function(item) {
+                withErrors.forEach(function (item) {
                     logger.logger.error(
                         "{red:Warning!} %s",
                         item.getIn(["errors", 0, "data", "message"])
@@ -213,7 +213,7 @@ var serverUtils = {
             }
 
             if (withoutErrors.size) {
-                withoutErrors.forEach(function(item) {
+                withoutErrors.forEach(function (item) {
                     defaultMiddlewares.push.apply(
                         defaultMiddlewares,
                         item.get("items").toJS()
@@ -229,11 +229,11 @@ var serverUtils = {
             .get("middleware")
             .map(normaliseMiddleware)
             .toArray();
-        var beforeMiddlewares = userMiddlewares.filter(function(x) {
+        var beforeMiddlewares = userMiddlewares.filter(function (x) {
             return x.override;
         });
         var afterMiddlewares = userMiddlewares
-            .filter(function(x) {
+            .filter(function (x) {
                 return !x.override;
             })
             .concat(
@@ -243,8 +243,8 @@ var serverUtils = {
                         route: "",
                         handle: serveIndex(bs.options.get("cwd"), {
                             icons: true,
-                            view: "details"
-                        })
+                            view: "details",
+                        }),
                     }
             );
 
@@ -268,7 +268,7 @@ var serverUtils = {
             if (typeof item === "function") {
                 return {
                     route: "",
-                    handle: item
+                    handle: item,
                 };
             }
             /**
@@ -279,20 +279,20 @@ var serverUtils = {
             }
         }
     },
-    getBaseApp: function(bs) {
+    getBaseApp: function (bs) {
         var app = connect();
         var middlewares = serverUtils.getMiddlewares(bs);
 
         /**
          * Add all internal middlewares
          */
-        middlewares.forEach(function(item) {
+        middlewares.forEach(function (item) {
             app.stack.push(item);
         });
 
         return app;
     },
-    getSnippetMiddleware: function(bs) {
+    getSnippetMiddleware: function (bs) {
         var rules = [];
         var blacklist = List([])
             .concat(bs.options.getIn(["snippetOptions", "ignorePaths"]))
@@ -312,7 +312,7 @@ var serverUtils = {
         );
 
         // User
-        bs.options.get("rewriteRules").forEach(function(rule) {
+        bs.options.get("rewriteRules").forEach(function (rule) {
             if (Map.isMap(rule)) {
                 rules.push(rule.toJS());
             }
@@ -332,13 +332,13 @@ var serverUtils = {
         var lr = lrSnippet.create({
             rules: rules,
             blacklist: blacklist.toArray(),
-            whitelist: whitelist.toArray()
+            whitelist: whitelist.toArray(),
         });
 
         return lr.middleware;
     },
-    getCorsMiddlewware: function() {
-        return function(req, res, next) {
+    getCorsMiddlewware: function () {
+        return function (req, res, next) {
             // Website you wish to allow to connect
             res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -365,8 +365,8 @@ var serverUtils = {
      * @param serveStaticOptions
      * @returns {*}
      */
-    getServeStaticMiddlewares: function(ssOption, serveStaticOptions) {
-        return ssOption.map(function(dir, i) {
+    getServeStaticMiddlewares: function (ssOption, serveStaticOptions) {
+        return ssOption.map(function (dir, i) {
             /**
              * When a user gives a plain string only, eg:
              *   serveStatic: ['./temp']
@@ -400,10 +400,10 @@ var serverUtils = {
                         type: "Invalid Type",
                         data: {
                             message:
-                                "Only strings and Objects (with route+dir) are supported for the ServeStatic option"
-                        }
-                    }
-                ]
+                                "Only strings and Objects (with route+dir) are supported for the ServeStatic option",
+                        },
+                    },
+                ],
             });
         });
 
@@ -425,10 +425,10 @@ var serverUtils = {
                 items: [
                     {
                         route: "",
-                        handle: serveStatic(dir, serveStaticOptions)
-                    }
+                        handle: serveStatic(dir, serveStaticOptions),
+                    },
                 ],
-                errors: []
+                errors: [],
             });
         }
 
@@ -437,7 +437,7 @@ var serverUtils = {
          * @returns {Map}
          */
         function getFromMap(dir) {
-            var ssOptions = (function() {
+            var ssOptions = (function () {
                 if (dir.get("options")) {
                     return dir.get("options").toJS();
                 }
@@ -459,41 +459,41 @@ var serverUtils = {
                             type: "Invalid Object",
                             data: {
                                 message:
-                                    "Serve Static requires a 'dir' property when using an Object"
-                            }
-                        }
-                    ]
+                                    "Serve Static requires a 'dir' property when using an Object",
+                            },
+                        },
+                    ],
                 });
             }
 
-            var ssItems = (function() {
+            var ssItems = (function () {
                 /**
                  * iterate over every 'route' item
                  * @type {Immutable.List<any>|Immutable.List<*>|Immutable.List<any>|*}
                  */
-                var routeItems = (function() {
+                var routeItems = (function () {
                     /**
                      * If no 'route' was given, assume we want to match all
                      * paths
                      */
                     if (route.size === 0) {
-                        return _dir.map(function(dirString) {
+                        return _dir.map(function (dirString) {
                             return Map({
                                 route: "",
-                                dir: dirString
+                                dir: dirString,
                             });
                         });
                     }
 
-                    return route.reduce(function(acc, routeString) {
+                    return route.reduce(function (acc, routeString) {
                         /**
                          * For each 'route' item, also iterate through 'dirs'
                          * @type {Immutable.Iterable<K, M>}
                          */
-                        var perDir = _dir.map(function(dirString) {
+                        var perDir = _dir.map(function (dirString) {
                             return Map({
                                 route: getRoute(routeString),
-                                dir: dirString
+                                dir: dirString,
                             });
                         });
                         return acc.concat(perDir);
@@ -503,19 +503,19 @@ var serverUtils = {
                 /**
                  * Now create a serverStatic Middleware for each item
                  */
-                return routeItems.map(function(routeItem) {
+                return routeItems.map(function (routeItem) {
                     return routeItem.merge({
-                        handle: serveStatic(routeItem.get("dir"), ssOptions)
+                        handle: serveStatic(routeItem.get("dir"), ssOptions),
                     });
                 });
             })();
 
             return fromJS({
                 items: ssItems,
-                errors: []
+                errors: [],
             });
         }
-    }
+    },
 };
 
 module.exports = serverUtils;

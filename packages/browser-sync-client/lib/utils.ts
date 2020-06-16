@@ -1,9 +1,9 @@
-import { concat } from "rxjs/observable/concat";
-import { timer } from "rxjs/observable/timer";
-import { of } from "rxjs/observable/of";
-import { switchMap } from "rxjs/operators/switchMap";
-import { startWith } from "rxjs/operators/startWith";
-import { mapTo } from "rxjs/operators/mapTo";
+import { concat } from "rxjs";
+import { timer } from "rxjs";
+import { of } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { startWith } from "rxjs/operators";
+import { mapTo } from "rxjs/operators";
 
 export function each(incoming) {
     return [].slice.call(incoming || []);

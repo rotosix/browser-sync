@@ -3,27 +3,27 @@ var assert = require("chai").assert;
 var sinon = require("sinon");
 var browserSync = require("../../../");
 
-describe("E2E OPEN Browsers options (1)", function() {
+describe("E2E OPEN Browsers options (1)", function () {
     var instance;
     var stub;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var config = {
             logLevel: "silent",
             server: "test/fixtures",
-            browser: "google chrome"
+            browser: "google chrome",
         };
         stub = sinon.stub(utils, "opnWrapper");
         instance = browserSync(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
         stub.restore();
     });
 
-    it("Opens the localhost address as default", function() {
+    it("Opens the localhost address as default", function () {
         var args = stub.getCall(0).args;
         sinon.assert.called(stub);
 
@@ -32,27 +32,27 @@ describe("E2E OPEN Browsers options (1)", function() {
     });
 });
 
-describe("E2E OPEN Browsers options (multiple)", function() {
+describe("E2E OPEN Browsers options (multiple)", function () {
     var instance;
     var stub;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var config = {
             logLevel: "silent",
             server: "test/fixtures",
-            browser: ["google chrome", "safari"]
+            browser: ["google chrome", "safari"],
         };
         stub = sinon.stub(utils, "opnWrapper");
         instance = browserSync(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
         stub.restore();
     });
 
-    it("Opens the localhost address as default", function() {
+    it("Opens the localhost address as default", function () {
         sinon.assert.called(stub);
         var local = instance.options.getIn(["urls", "local"]);
 
@@ -66,22 +66,22 @@ describe("E2E OPEN Browsers options (multiple)", function() {
     });
 });
 
-describe("E2E browser option with app args", function() {
-    it("opens with object literal", function(done) {
+describe("E2E browser option with app args", function () {
+    it("opens with object literal", function (done) {
         browserSync.reset();
         var appArg = {
             app: [
                 "chromium-browser",
                 "--app=http://localhost:8080",
                 "--proxy-server=localhost:8080",
-                "--user-data-dir=.tmp/chomium"
-            ]
+                "--user-data-dir=.tmp/chomium",
+            ],
         };
         var config = {
             logLevel: "silent",
             server: "test/fixtures",
             online: false,
-            browser: appArg
+            browser: appArg,
         };
 
         var stub = sinon.spy(utils, "opnWrapper");
@@ -89,9 +89,9 @@ describe("E2E browser option with app args", function() {
         require(opnPath);
         var opnStub = require("sinon")
             .stub(require.cache[opnPath], "exports")
-            .returns({ catch: function() {} });
+            .returns({ catch: function () {} });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             bs.cleanup();
             stub.restore();
             var args = opnStub.getCall(0).args;
@@ -101,21 +101,21 @@ describe("E2E browser option with app args", function() {
             done();
         });
     });
-    it("opens with mix of string + objects", function(done) {
+    it("opens with mix of string + objects", function (done) {
         browserSync.reset();
         var appArg = {
             app: [
                 "chromium-browser",
                 "--app=http://localhost:8080",
                 "--proxy-server=localhost:8080",
-                "--user-data-dir=.tmp/chomium"
-            ]
+                "--user-data-dir=.tmp/chomium",
+            ],
         };
         var config = {
             logLevel: "silent",
             server: "test/fixtures",
             online: false,
-            browser: [appArg, "safari", "firefox"]
+            browser: [appArg, "safari", "firefox"],
         };
 
         var stub = sinon.spy(utils, "opnWrapper");
@@ -123,9 +123,9 @@ describe("E2E browser option with app args", function() {
         require(opnPath);
         var opnStub = require("sinon")
             .stub(require.cache[opnPath], "exports")
-            .returns({ catch: function() {} });
+            .returns({ catch: function () {} });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             bs.cleanup();
             stub.restore();
             var args1 = opnStub.getCall(0).args;

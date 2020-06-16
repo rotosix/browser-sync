@@ -2,9 +2,9 @@ import { FileReloadEventPayload } from "../../types/socket";
 import { EffectNames } from "../effects";
 import { Inputs } from "../index";
 import { reload } from "../../vendor/Reloader";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { mergeMap } from "rxjs/operators/mergeMap";
-import { Observable } from "rxjs/Observable";
+import { withLatestFrom } from "rxjs/operators";
+import { mergeMap } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 export function fileReload(event: FileReloadEventPayload) {
     return [EffectNames.FileReload, event];

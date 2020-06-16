@@ -2,33 +2,33 @@ var browserSync = require("../../../../");
 var assert = require("chai").assert;
 var request = require("supertest");
 
-describe("Accepting middleware as an option (1)", function() {
+describe("Accepting middleware as an option (1)", function () {
     var bs;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
-        var mw = function(req, res) {
+        var mw = function (req, res) {
             res.end("<html><body></body></html>");
         };
 
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             middleware: mw, // single function given
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
         bs = browserSync.init(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         bs.cleanup();
     });
 
-    it("should accept middlewares when given as top-level", function() {
+    it("should accept middlewares when given as top-level", function () {
         assert.equal(
             bs.options.get("middleware").size,
             2,
@@ -37,36 +37,36 @@ describe("Accepting middleware as an option (1)", function() {
     });
 });
 
-describe("Accepting middleware as an option (2)", function() {
+describe("Accepting middleware as an option (2)", function () {
     var bs;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
-        var mw1 = function(req, res) {
+        var mw1 = function (req, res) {
             res.end("<html><body></body></html>");
         };
-        var mw2 = function(req, res) {
+        var mw2 = function (req, res) {
             res.end("<html><body></body></html>");
         };
 
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             middleware: [mw1, mw2], // single function given
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
         bs = browserSync.init(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         bs.cleanup();
     });
 
-    it("should accept middlewares when given as top-level", function() {
+    it("should accept middlewares when given as top-level", function () {
         assert.equal(
             bs.options.get("middleware").size,
             3,
@@ -75,8 +75,8 @@ describe("Accepting middleware as an option (2)", function() {
     });
 });
 
-describe("Accepting middleware as a plain object", function() {
-    it("should accept middlewares with routes", function(done) {
+describe("Accepting middleware as a plain object", function () {
+    it("should accept middlewares with routes", function (done) {
         browserSync.reset();
 
         var called = 0;
@@ -90,25 +90,25 @@ describe("Accepting middleware as a plain object", function() {
         };
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             middleware: [
                 mw1,
                 {
                     route: "/shane",
-                    handle: mw2
-                }
+                    handle: mw2,
+                },
             ],
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
-        browserSync.init(config, function(err, bs) {
+        browserSync.init(config, function (err, bs) {
             request(bs.options.getIn(["urls", "local"]))
                 .get("/")
                 .set("accept", "text/html")
                 .expect(200)
-                .end(function() {
+                .end(function () {
                     assert.equal(called, 1, "should call the first middleware");
                     bs.cleanup();
                     done();

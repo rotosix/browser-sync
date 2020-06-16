@@ -8,10 +8,10 @@ var client = require("socket.io-client");
 var pkg = require(path.resolve("package.json"));
 var cli = require(path.resolve(pkg.bin)).default;
 
-describe("E2E CLI proxy + websockets test", function() {
+describe("E2E CLI proxy + websockets test", function () {
     var instance, server;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var app = connect();
         server = app.listen();
@@ -26,30 +26,30 @@ describe("E2E CLI proxy + websockets test", function() {
                     open: false,
                     online: false,
                     logLevel: "silent",
-                    ws: true
-                }
+                    ws: true,
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 instance = bs;
                 done();
-            }
+            },
         });
     });
-    after(function() {
+    after(function () {
         server.close();
         instance.cleanup();
     });
-    it("can proxy websocket upgrades", function(done) {
+    it("can proxy websocket upgrades", function (done) {
         assert.equal(instance.options.getIn(["proxy", "ws"]), true);
 
         socket(server);
 
-        server.on("upgrade", function() {
+        server.on("upgrade", function () {
             done();
         });
 
         client.connect(instance.options.getIn(["urls", "local"]), {
-            forceNew: true
+            forceNew: true,
         });
     });
 });

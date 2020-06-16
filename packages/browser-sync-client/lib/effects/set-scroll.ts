@@ -1,14 +1,14 @@
 import { IncomingPayload } from "../messages/ScrollEvent";
 import { Inputs } from "../index";
-import { pluck } from "rxjs/operators/pluck";
-import { Observable } from "rxjs/Observable";
-import { ignoreElements } from "rxjs/operators/ignoreElements";
-import { partition } from "rxjs/operators/partition";
-import { merge } from "rxjs/observable/merge";
+import { pluck } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { ignoreElements } from "rxjs/operators";
+import { partition } from "rxjs/operators";
+import { merge } from "rxjs";
 import { getDocumentScrollSpace } from "../browser.utils";
-import { tap } from "rxjs/operators/tap";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { map } from "rxjs/operators/map";
+import { tap } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 type Tuple = [IncomingPayload, Window, Document, boolean];
 
@@ -17,11 +17,18 @@ export function setScrollEffect(
     inputs: Inputs
 ) {
     {
-        /**
+      /**
          * Group the incoming event with window, document & scrollProportionally argument
          */
+        // FIXME: TS2322: Type 'Observable<boolean>' is not assignable to type 'Observable<Tuple>'.
+        //  Type 'boolean' is not assignable to type 'Tuple'.
+        // @ts-ignore
         const tupleStream$: Observable<Tuple> = xs.pipe(
-            withLatestFrom<IncomingPayload, Window, Document, boolean>(
+            withLatestFrom<IncomingPayload, Window,
+              // FIXME: TS2344: Type 'Document' does not satisfy the constraint 'ObservableInput<any>'.
+              //  Property '[Symbol.iterator]' is missing in type 'Document' but required in type 'Iterable<any>'.
+              // @ts-ignore
+              Document, boolean>(
                 inputs.window$,
                 inputs.document$,
                 inputs.option$.pipe(pluck("scrollProportionally"))

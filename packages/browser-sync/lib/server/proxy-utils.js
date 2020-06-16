@@ -1,6 +1,6 @@
 var url = require("url");
 
-module.exports.rewriteLinks = function(userServer) {
+module.exports.rewriteLinks = function (userServer) {
     var host = userServer.hostname;
     var string = host;
     var port = userServer.port;
@@ -38,7 +38,7 @@ module.exports.rewriteLinks = function(userServer) {
         //match: new RegExp("https?:\\\\?/\\\\?/" + string + "(\/)?|('|\")(https?://|\\\\?/|\\.)?" + string + "(\/)?(.*?)(?=[ ,'\"\\s])", "g"),
         //match: new RegExp('https?://' + string + '(\/)?|(\'|")(https?://|/|\\.)?' + string + '(\/)?(.*?)(?=[ ,\'"\\s])', 'g'),
         //match: new RegExp("https?:\\\\/\\\\/" + string, "g"),
-        fn: function(req, res, match) {
+        fn: function (req, res, match) {
             var proxyUrl = req.headers["host"];
 
             /**
@@ -94,9 +94,9 @@ module.exports.rewriteLinks = function(userServer) {
                 pre,
                 proxyUrl,
                 out.path || "",
-                out.hash || ""
+                out.hash || "",
             ].join("");
-        }
+        },
     };
 };
 
@@ -106,7 +106,7 @@ module.exports.rewriteLinks = function(userServer) {
  */
 module.exports.checkCookies = function checkCookies(res) {
     if (typeof res.headers["set-cookie"] !== "undefined") {
-        res.headers["set-cookie"] = res.headers["set-cookie"].map(function(
+        res.headers["set-cookie"] = res.headers["set-cookie"].map(function (
             item
         ) {
             return rewriteCookies(item);
@@ -120,12 +120,12 @@ module.exports.checkCookies = function checkCookies(res) {
  * @returns {string}
  */
 function rewriteCookies(rawCookie) {
-    var objCookie = (function() {
+    var objCookie = (function () {
         // simple parse function (does not remove quotes)
         var obj = {};
         var pairs = rawCookie.split(/; */);
 
-        pairs.forEach(function(pair) {
+        pairs.forEach(function (pair) {
             var eqIndex = pair.indexOf("=");
 
             // skip things that don't look like key=value
@@ -141,10 +141,10 @@ function rewriteCookies(rawCookie) {
     })();
 
     var pairs = Object.keys(objCookie)
-        .filter(function(item) {
+        .filter(function (item) {
             return item.toLowerCase() !== "domain";
         })
-        .map(function(key) {
+        .map(function (key) {
             return key + "=" + objCookie[key];
         });
 

@@ -5,8 +5,8 @@ var pkg = require(path.resolve("package.json"));
 var cli = require(path.resolve(pkg.bin)).default;
 var assert = require("chai").assert;
 
-describe("Plugins: Exit when plugin not found", function() {
-    it("returns an error if a plugin cannot be located", function(done) {
+describe("Plugins: Exit when plugin not found", function () {
+    it("returns an error if a plugin cannot be located", function (done) {
         var stub = require("sinon").stub(utils, "fail");
         browserSync.reset();
 
@@ -16,16 +16,16 @@ describe("Plugins: Exit when plugin not found", function() {
                 flags: {
                     logLevel: "silent",
                     plugins: ["bs-oops-typos"],
-                    open: false
-                }
+                    open: false,
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 var err = stub.getCall(0).args[1];
                 assert.include(err.message, "bs-oops-typos");
                 utils.fail.restore();
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
 });

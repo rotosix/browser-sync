@@ -3,39 +3,39 @@ var hook = require("../../../dist/hooks")["files:watch"];
 var merge = require("../../../dist/cli/cli-options").merge;
 var browserSync = require("../../../");
 
-describe("files:watch hook", function() {
-    it("should accept initial as List", function() {
+describe("files:watch hook", function () {
+    it("should accept initial as List", function () {
         var [imm] = merge({
-            files: "*.html"
+            files: "*.html",
         });
         assert.deepEqual(hook([], imm.get("files")).toJS(), {
             core: {
                 globs: ["*.html"],
-                objs: []
-            }
+                objs: [],
+            },
         });
     });
-    it("should accept initial as List", function() {
+    it("should accept initial as List", function () {
         var [imm] = merge({
-            files: ["*.html"]
+            files: ["*.html"],
         });
 
         assert.deepEqual(hook([], imm.get("files")).toJS(), {
             core: {
                 globs: ["*.html"],
-                objs: []
-            }
+                objs: [],
+            },
         });
     });
-    it("should accept & merge initial as List + Plugin options", function() {
+    it("should accept & merge initial as List + Plugin options", function () {
         var [imm] = merge({
-            files: "*.html"
+            files: "*.html",
         });
 
         var pluginOptions = {
             plugin1: {
-                files: "*.hbs"
-            }
+                files: "*.hbs",
+            },
         };
 
         var files = imm.get("files");
@@ -43,16 +43,16 @@ describe("files:watch hook", function() {
         assert.deepEqual(hook([], files, pluginOptions).toJS(), {
             core: {
                 globs: ["*.html"],
-                objs: []
+                objs: [],
             },
             plugin1: {
                 globs: ["*.hbs"],
-                objs: []
-            }
+                objs: [],
+            },
         });
     });
-    it("should accept both string globs + objects as file watching patterns", function() {
-        var cb = function(event, file) {
+    it("should accept both string globs + objects as file watching patterns", function () {
+        var cb = function (event, file) {
             console.log(file);
         };
 
@@ -61,16 +61,16 @@ describe("files:watch hook", function() {
                 "*.html",
                 {
                     match: "*.css",
-                    fn: cb
-                }
-            ]
+                    fn: cb,
+                },
+            ],
         });
 
         assert.equal(imm.get("files").toJS().core.globs[0], "*.html");
         assert.equal(imm.get("files").toJS().core.objs[0].match, "*.css");
     });
-    it("should string globs + objects as file watching patterns 1", function() {
-        var cb = function(event, file) {
+    it("should string globs + objects as file watching patterns 1", function () {
+        var cb = function (event, file) {
             console.log(file);
         };
 
@@ -79,15 +79,15 @@ describe("files:watch hook", function() {
                 "*.html",
                 {
                     match: "*.css",
-                    fn: cb
-                }
-            ]
+                    fn: cb,
+                },
+            ],
         });
 
         var pluginOptions = {
             plugin1: {
-                files: "*.hbs"
-            }
+                files: "*.hbs",
+            },
         };
 
         var out = hook([], imm.get("files"), pluginOptions).toJS();
@@ -102,8 +102,8 @@ describe("files:watch hook", function() {
 
         assert.equal(out.plugin1.globs[0], "*.hbs");
     });
-    it("should string globs + objects as file watching patterns 2", function() {
-        var cb = function(event, file) {
+    it("should string globs + objects as file watching patterns 2", function () {
+        var cb = function (event, file) {
             console.log(file);
         };
 
@@ -112,9 +112,9 @@ describe("files:watch hook", function() {
                 "*.html",
                 {
                     match: "*.css",
-                    fn: cb
-                }
-            ]
+                    fn: cb,
+                },
+            ],
         });
 
         var pluginOptions = {
@@ -123,10 +123,10 @@ describe("files:watch hook", function() {
                     "*.hbs",
                     {
                         match: "*.css",
-                        fn: cb
-                    }
-                ]
-            }
+                        fn: cb,
+                    },
+                ],
+            },
         };
 
         var out = hook([], imm.get("files"), pluginOptions).toJS();
@@ -143,7 +143,7 @@ describe("files:watch hook", function() {
         assert.equal(out.plugin1.objs[0].fn, cb);
     });
 
-    it("should string globs + objects as file watching patterns 3", function(done) {
+    it("should string globs + objects as file watching patterns 3", function (done) {
         browserSync.reset();
         browserSync.create().init(
             {
@@ -153,28 +153,28 @@ describe("files:watch hook", function() {
                     "*.html",
                     {
                         match: "*.css",
-                        fn: function() {}
-                    }
+                        fn: function () {},
+                    },
                 ],
                 plugins: [
                     {
                         module: {
-                            plugin: function() {},
-                            "plugin:name": "plugin1"
+                            plugin: function () {},
+                            "plugin:name": "plugin1",
                         },
                         options: {
                             files: [
                                 "*.hbs",
                                 {
                                     match: "*.less",
-                                    fn: function() {}
-                                }
-                            ]
-                        }
-                    }
-                ]
+                                    fn: function () {},
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            function(err, bs) {
+            function (err, bs) {
                 if (err) {
                     console.log(err);
                     return done(err);
@@ -186,8 +186,8 @@ describe("files:watch hook", function() {
             }
         );
     });
-    it("should string multi globs + objects as file watching patterns", function(done) {
-        var cb = function() {};
+    it("should string multi globs + objects as file watching patterns", function (done) {
+        var cb = function () {};
         browserSync.reset();
         browserSync.create().init(
             {
@@ -198,47 +198,47 @@ describe("files:watch hook", function() {
                     "*.jade",
                     {
                         match: ["*.html"],
-                        fn: cb
+                        fn: cb,
                     },
                     {
                         match: ["*.css"],
-                        fn: cb
-                    }
+                        fn: cb,
+                    },
                 ],
                 plugins: [
                     {
                         module: {
-                            plugin: function() {},
-                            "plugin:name": "plugin1"
+                            plugin: function () {},
+                            "plugin:name": "plugin1",
                         },
                         options: {
                             files: [
                                 "*.hbs",
                                 {
                                     match: "!*.less",
-                                    fn: cb
-                                }
-                            ]
-                        }
+                                    fn: cb,
+                                },
+                            ],
+                        },
                     },
                     {
                         module: {
-                            plugin: function() {},
-                            "plugin:name": "plugin2"
+                            plugin: function () {},
+                            "plugin:name": "plugin2",
                         },
                         options: {
                             files: [
                                 "*.hbs",
                                 {
                                     match: "*.less",
-                                    fn: cb
-                                }
-                            ]
-                        }
-                    }
-                ]
+                                    fn: cb,
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            function(err, bs) {
+            function (err, bs) {
                 if (err) {
                     console.log(err);
                     return done(err);
@@ -252,8 +252,8 @@ describe("files:watch hook", function() {
         );
     });
 
-    it("should accept objs only as main option", function(done) {
-        var cb = function() {};
+    it("should accept objs only as main option", function (done) {
+        var cb = function () {};
         browserSync.reset();
         browserSync.create().init(
             {
@@ -262,11 +262,11 @@ describe("files:watch hook", function() {
                 files: [
                     {
                         match: ["*.html"],
-                        fn: cb
-                    }
-                ]
+                        fn: cb,
+                    },
+                ],
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(1, bs.watchers.core.watchers.length);
                 bs.cleanup();
                 done();
@@ -274,8 +274,8 @@ describe("files:watch hook", function() {
         );
     });
 
-    it("should accept objs only as plugin options only", function(done) {
-        var cb = function() {};
+    it("should accept objs only as plugin options only", function (done) {
+        var cb = function () {};
         browserSync.reset();
         browserSync.create().init(
             {
@@ -284,21 +284,21 @@ describe("files:watch hook", function() {
                 plugins: [
                     {
                         module: {
-                            plugin: function() {},
-                            "plugin:name": "plugin1"
+                            plugin: function () {},
+                            "plugin:name": "plugin1",
                         },
                         options: {
                             files: [
                                 {
                                     match: "!*.less",
-                                    fn: cb
-                                }
-                            ]
-                        }
-                    }
-                ]
+                                    fn: cb,
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(1, bs.watchers.plugin1.watchers.length);
                 bs.cleanup();
                 done();
@@ -306,8 +306,8 @@ describe("files:watch hook", function() {
         );
     });
 
-    it("should accept globs only as plugin options only", function(done) {
-        var cb = function() {};
+    it("should accept globs only as plugin options only", function (done) {
+        var cb = function () {};
         browserSync.reset();
         browserSync.create().init(
             {
@@ -317,8 +317,8 @@ describe("files:watch hook", function() {
                 plugins: [
                     {
                         module: {
-                            plugin: function() {},
-                            "plugin:name": "plugin1"
+                            plugin: function () {},
+                            "plugin:name": "plugin1",
                         },
                         options: {
                             files: [
@@ -326,14 +326,14 @@ describe("files:watch hook", function() {
                                 "*.css",
                                 {
                                     match: "*.jade",
-                                    fn: cb
-                                }
-                            ]
-                        }
-                    }
-                ]
+                                    fn: cb,
+                                },
+                            ],
+                        },
+                    },
+                ],
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(2, bs.watchers.plugin1.watchers.length);
                 assert.equal(1, bs.watchers.core.watchers.length);
                 bs.cleanup();

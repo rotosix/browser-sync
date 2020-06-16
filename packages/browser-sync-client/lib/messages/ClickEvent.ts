@@ -1,10 +1,10 @@
 import { OutgoingSocketEvents } from "../socket-messages";
 import { Inputs } from "../index";
-import { Observable } from "rxjs/Observable";
-import { pluck } from "rxjs/operators/pluck";
-import { filter } from "rxjs/operators/filter";
-import { map } from "rxjs/operators/map";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
+import { Observable } from "rxjs";
+import { pluck } from "rxjs/operators";
+import { filter } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
 import { simulateClick } from "../effects/simulate-click.effect";
 
 export interface ElementData {

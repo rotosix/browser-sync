@@ -4,32 +4,32 @@ var sinon = require("sinon");
 var assert = require("chai").assert;
 var File = require("vinyl");
 
-describe("API: .stream()", function() {
+describe("API: .stream()", function () {
     var emitterStub, bs, scheduler;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         scheduler = require("../../utils").getScheduler();
         bs = browserSync(
             { logLevel: "silent", debug: { scheduler: scheduler } },
-            function() {
+            function () {
                 emitterStub = sinon.spy(bs.emitter, "emit");
                 done();
             }
         );
     });
 
-    afterEach(function() {
+    afterEach(function () {
         emitterStub.reset();
         scheduler.clock = 0;
     });
 
-    after(function() {
+    after(function () {
         bs.cleanup();
         emitterStub.restore();
     });
 
-    it("should handle a single file changed", function() {
+    it("should handle a single file changed", function () {
         var stream = browserSync.stream();
         stream.write(new File({ path: "styles.css" }));
         stream.end();
@@ -40,10 +40,10 @@ describe("API: .stream()", function() {
             log: false,
             namespace: "core",
             event: "change",
-            ext: "css"
+            ext: "css",
         });
     });
-    it("should accept multiple files in stream", function() {
+    it("should accept multiple files in stream", function () {
         var stream = browserSync.stream();
         stream.write(new File({ path: "styles.css" }));
         stream.write(new File({ path: "styles2.css" }));
@@ -55,7 +55,7 @@ describe("API: .stream()", function() {
             log: false,
             namespace: "core",
             event: "change",
-            ext: "css"
+            ext: "css",
         });
         sinon.assert.calledWithExactly(emitterStub, "file:changed", {
             path: "styles2.css",
@@ -63,13 +63,13 @@ describe("API: .stream()", function() {
             log: false,
             namespace: "core",
             event: "change",
-            ext: "css"
+            ext: "css",
         });
         sinon.assert.calledWithExactly(emitterStub, "stream:changed", {
-            changed: ["styles.css", "styles2.css"]
+            changed: ["styles.css", "styles2.css"],
         });
     });
-    it("should reload browser if once:true given as arg", function() {
+    it("should reload browser if once:true given as arg", function () {
         var stream = browserSync.stream({ once: true });
         stream.write(new File({ path: "styles.css" }));
         stream.write(new File({ path: "styles2.css" }));
@@ -79,7 +79,7 @@ describe("API: .stream()", function() {
         sinon.assert.calledWithExactly(emitterStub, "_browser:reload");
         sinon.assert.calledWithExactly(emitterStub, "browser:reload");
     });
-    it("does not log file info if (once: true)", function() {
+    it("does not log file info if (once: true)", function () {
         var stream = browserSync.stream({ once: true });
         stream.write(new File({ path: "styles.js" }));
         stream.write(new File({ path: "styles2.js" }));
@@ -89,7 +89,7 @@ describe("API: .stream()", function() {
         sinon.assert.calledWithExactly(emitterStub, "_browser:reload");
         sinon.assert.calledWithExactly(emitterStub, "browser:reload");
     });
-    it("only emits file-changed event if filter matched", function() {
+    it("only emits file-changed event if filter matched", function () {
         var stream = browserSync.stream({ match: "**/*.js" });
         stream.write(new File({ path: "/users/shane/styles.js" }));
         stream.write(new File({ path: "core.css" }));
@@ -100,14 +100,14 @@ describe("API: .stream()", function() {
             event: "change",
             log: false,
             namespace: "core",
-            path: "/users/shane/styles.js"
+            path: "/users/shane/styles.js",
         });
         sinon.assert.calledWith(emitterStub, "browser:reload");
         sinon.assert.calledWithExactly(emitterStub, "stream:changed", {
-            changed: ["styles.js"]
+            changed: ["styles.js"],
         });
     });
-    it("only emits file-changed event if filter returns no results", function() {
+    it("only emits file-changed event if filter returns no results", function () {
         var stream = browserSync.stream({ match: "**/*.md" });
         stream.write(new File({ path: "/users/shane/styles.js" }));
         stream.write(new File({ path: "core.css" }));
@@ -116,7 +116,7 @@ describe("API: .stream()", function() {
         scheduler.advanceTo(600);
         sinon.assert.notCalled(emitterStub);
     });
-    it("accepts file paths beginning with dots", function() {
+    it("accepts file paths beginning with dots", function () {
         var stream = browserSync.stream({ match: "**/*.css" });
         stream.write(new File({ path: "/users/shakyshane/.tmp/css/core.css" }));
         stream.write(
@@ -130,7 +130,7 @@ describe("API: .stream()", function() {
             log: false,
             namespace: "core",
             event: "change",
-            ext: "css"
+            ext: "css",
         });
         sinon.assert.calledWithExactly(emitterStub, "file:reload", {
             ext: "css",
@@ -138,13 +138,13 @@ describe("API: .stream()", function() {
             basename: "core.css",
             type: "inject",
             log: false,
-            event: "change"
+            event: "change",
         });
         sinon.assert.calledWithExactly(emitterStub, "stream:changed", {
-            changed: ["core.css"]
+            changed: ["core.css"],
         });
     });
-    it("emits the stream:changed event with an array of changed files", function() {
+    it("emits the stream:changed event with an array of changed files", function () {
         var stream = browserSync.stream();
 
         stream.write(new File({ path: "/users/shane/styles.js" }));
@@ -160,7 +160,7 @@ describe("API: .stream()", function() {
 
         assert.deepEqual(emitterStub.getCall(3).args, [
             "stream:changed",
-            { changed: ["styles.js", "core.css", "index.html"] }
+            { changed: ["styles.js", "core.css", "index.html"] },
         ]);
 
         assert.equal(emitterStub.getCall(4).args[0], "browser:reload");

@@ -5,10 +5,10 @@ var browserSync = require(path.resolve("./"));
 var pkg = require(path.resolve("package.json"));
 var cli = require(path.resolve(pkg.bin)).default;
 
-describe.skip("E2E CLI - fail on invalid config", function() {
+describe.skip("E2E CLI - fail on invalid config", function () {
     var stub;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         stub = require("sinon").stub(process, "exit");
         cli({
@@ -17,15 +17,15 @@ describe.skip("E2E CLI - fail on invalid config", function() {
                 flags: {
                     logLevel: "silent",
                     server: true,
-                    proxy: "http://bbc.co.uk"
-                }
+                    proxy: "http://bbc.co.uk",
+                },
             },
-            cb: function() {
+            cb: function () {
                 done();
-            }
+            },
         });
     });
-    it("should fail with exit code 1 when both proxy & server config given", function(done) {
+    it("should fail with exit code 1 when both proxy & server config given", function (done) {
         require("sinon").assert.called(stub);
         assert.equal(stub.getCall(0).args[0], 1);
         process.exit.restore();

@@ -3,59 +3,59 @@ var browserSync = require("../../../");
 var request = require("supertest");
 var assert = require("chai").assert;
 
-describe("E2E snippet tests", function() {
+describe("E2E snippet tests", function () {
     var instance;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
         var config = {
-            logLevel: "silent"
+            logLevel: "silent",
         };
 
         instance = browserSync.init(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
     });
 
-    it("returns the snippet URL", function(done) {
+    it("returns the snippet URL", function (done) {
         request(instance.server)
             .get(instance.options.getIn(["scriptPaths", "versioned"]))
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 assert.include(res.text, "window.___browserSync___ = {}");
                 done();
             });
     });
 });
 
-describe("E2E TLS snippet tests", function() {
+describe("E2E TLS snippet tests", function () {
     var instance;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
         var config = {
             logLevel: "silent",
-            https: true
+            https: true,
         };
 
         instance = browserSync.init(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
     });
 
-    it("returns the snippet URL over HTTPS", function(done) {
+    it("returns the snippet URL over HTTPS", function (done) {
         var options = instance.options.toJS();
 
         request(options.urls.local)
             .get(options.scriptPaths.versioned)
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 if (err) {
                     return done(err);
                 }

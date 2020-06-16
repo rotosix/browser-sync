@@ -2,28 +2,28 @@ var browserSync = require("../../../../");
 
 var assert = require("chai").assert;
 
-describe.skip("Tunnel e2e tests", function() {
+describe.skip("Tunnel e2e tests", function () {
     var instance;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             logLevel: "silent",
             open: false,
             tunnel: true,
-            online: true
+            online: true,
         };
         instance = browserSync(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
     });
 
-    it("should call init on the tunnel", function() {
+    it("should call init on the tunnel", function () {
         assert.include(
             instance.options.getIn(["urls", "tunnel"]),
             "localtunnel.me"
@@ -31,28 +31,28 @@ describe.skip("Tunnel e2e tests", function() {
     });
 });
 
-describe.skip("Tunnel e2e tests with subdomain", function() {
+describe.skip("Tunnel e2e tests with subdomain", function () {
     var instance;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             logLevel: "silent",
             open: false,
             tunnel: String(Math.floor(Math.random() * 2e10)),
-            online: true
+            online: true,
         };
         instance = browserSync(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
     });
 
-    it("should call init on the tunnel", function() {
+    it("should call init on the tunnel", function () {
         assert.include(
             instance.options.getIn(["urls", "tunnel"]),
             "localtunnel.me"
@@ -60,17 +60,17 @@ describe.skip("Tunnel e2e tests with subdomain", function() {
     });
 });
 
-describe("Tunnel e2e tests with Error", function() {
-    it.skip("does not blow up if tunnel unavailable", function(done) {
+describe("Tunnel e2e tests with Error", function () {
+    it.skip("does not blow up if tunnel unavailable", function (done) {
         browserSync.reset();
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             logLevel: "silent",
             open: false,
             tunnel: true,
-            online: true
+            online: true,
         };
 
         var tunnelPath = require.resolve("localtunnel");
@@ -81,7 +81,7 @@ describe("Tunnel e2e tests with Error", function() {
             .stub(require.cache[tunnelPath], "exports")
             .yields(new Error("Some error from localtunnel.me"));
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             assert.isUndefined(bs.options.getIn(["urls", "tunnel"]));
             delete require.cache[tunnelPath];
             bs.cleanup();
@@ -89,18 +89,18 @@ describe("Tunnel e2e tests with Error", function() {
         });
     });
 
-    it.skip("does not crash if tunnel restarts", function(done) {
+    it.skip("does not crash if tunnel restarts", function (done) {
         browserSync.reset();
         var config = {
             server: {
-                baseDir: "test/fixtures"
+                baseDir: "test/fixtures",
             },
             open: false,
             tunnel: true,
-            online: true
+            online: true,
         };
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             bs.tunnel.emit(
                 "error",
                 new Error("connection refused: (check your firewall settings)")

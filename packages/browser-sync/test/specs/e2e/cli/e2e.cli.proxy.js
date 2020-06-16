@@ -8,10 +8,10 @@ var serveStatic = require("serve-static");
 var pkg = require(path.resolve("package.json"));
 var cli = require(path.resolve(pkg.bin)).default;
 
-describe("E2E CLI proxy test", function() {
+describe("E2E CLI proxy test", function () {
     var instance, server;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
         var app = connect();
         app.use(serveStatic("./test/fixtures"));
@@ -25,35 +25,35 @@ describe("E2E CLI proxy test", function() {
                     proxy: proxytarget,
                     open: false,
                     online: false,
-                    logLevel: "silent"
-                }
+                    logLevel: "silent",
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 instance = bs;
                 done();
-            }
+            },
         });
     });
-    after(function() {
+    after(function () {
         server.close();
         instance.cleanup();
     });
-    it("serves index.html + snippet injected", function(done) {
+    it("serves index.html + snippet injected", function (done) {
         request(instance.server)
             .get("/index.html")
             .set("accept", "text/html")
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 assert.include(res.text, instance.options.get("snippet"));
                 done();
             });
     });
-    it("serves browser-sync client js", function(done) {
+    it("serves browser-sync client js", function (done) {
         request(instance.server)
             .get(instance.options.getIn(["scriptPaths", "versioned"]))
             .set("accept", "text/html")
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
                 // console.log(res.text.indexOf("1"));
                 assert.include(res.text, "window.___browserSync___ = {}");
                 done();
@@ -61,10 +61,10 @@ describe("E2E CLI proxy test", function() {
     });
 });
 
-describe("E2E CLI proxy test (2)", function() {
+describe("E2E CLI proxy test (2)", function () {
     var instance;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
         cli({
@@ -73,19 +73,19 @@ describe("E2E CLI proxy test (2)", function() {
                 flags: {
                     proxy: "localhost:8000/path/is/here", // this is: `browser-sync start --proxy localhost:8000/path/is/here`
                     logLevel: "silent",
-                    open: false
-                }
+                    open: false,
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 instance = bs;
                 done();
-            }
+            },
         });
     });
-    after(function(done) {
+    after(function (done) {
         instance.cleanup(done);
     });
-    it("promote paths in the proxy to startPath option", function() {
+    it("promote paths in the proxy to startPath option", function () {
         assert.equal(instance.options.get("startPath"), "/path/is/here");
     });
 });

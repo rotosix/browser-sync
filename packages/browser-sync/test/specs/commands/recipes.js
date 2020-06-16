@@ -10,31 +10,31 @@ var cli = require(path.resolve(pkg.bin)).default;
 var fs = require("fs");
 var rim = require("rimraf").sync;
 
-describe("E2E CLI `recipes` command", function() {
-    it("works with no output flag", function(done) {
+describe("E2E CLI `recipes` command", function () {
+    it("works with no output flag", function (done) {
         rim("./server");
         cli({
             cli: {
                 input: ["recipe", "server"],
-                flags: {}
+                flags: {},
             },
-            cb: function() {
+            cb: function () {
                 assert.isTrue(fs.existsSync("./server"));
                 rim("./server");
                 done();
-            }
+            },
         });
     });
-    it("lists all available when no second arg given", function(done) {
+    it("lists all available when no second arg given", function (done) {
         var stub1 = sinon.stub(logger, "info");
         var stub2 = sinon.stub(console, "log");
 
         cli({
             cli: {
                 input: ["recipe"],
-                flags: {}
+                flags: {},
             },
-            cb: function() {
+            cb: function () {
                 sinon.assert.calledWith(stub1, "No recipe name provided!");
                 sinon.assert.calledWith(
                     stub1,
@@ -44,7 +44,7 @@ describe("E2E CLI `recipes` command", function() {
                 logger.info.restore();
                 console.log.restore();
 
-                var calls = stub2.getCalls().map(function(call) {
+                var calls = stub2.getCalls().map(function (call) {
                     return call.args[0].trim();
                 });
 
@@ -52,36 +52,36 @@ describe("E2E CLI `recipes` command", function() {
                 assert.include(calls, "server");
                 assert.include(calls, "html.injection");
                 done();
-            }
+            },
         });
     });
-    it("Does not overwrite existing dir", function(done) {
+    it("Does not overwrite existing dir", function (done) {
         cli({
             cli: {
                 input: ["recipe", "server"],
                 flags: {
-                    output: "test/fixtures"
-                }
+                    output: "test/fixtures",
+                },
             },
-            cb: function(err) {
+            cb: function (err) {
                 assert.equal(
                     err.message,
                     "Target folder exists remove it first and then try again"
                 );
                 done();
-            }
+            },
         });
     });
-    it("accepts --output flag", function(done) {
+    it("accepts --output flag", function (done) {
         var stub1 = sinon.stub(logger, "info");
         cli({
             cli: {
                 input: ["recipe", "server"],
                 flags: {
-                    output: "test/recipes/server1"
-                }
+                    output: "test/recipes/server1",
+                },
             },
-            cb: function() {
+            cb: function () {
                 var dir = path.resolve("./test/recipes/server1");
                 assert.isTrue(fs.existsSync("test/recipes/server1"));
                 rim("test/recipes/server1");
@@ -94,26 +94,26 @@ describe("E2E CLI `recipes` command", function() {
                 );
                 logger.info.restore();
                 done();
-            }
+            },
         });
     });
-    it("Loges recipes when not found", function(done) {
+    it("Loges recipes when not found", function (done) {
         var stub1 = sinon.stub(logger, "info");
         var stub2 = sinon.stub(console, "log");
 
         cli({
             cli: {
                 input: ["recipe", "beepboop"],
-                flags: {}
+                flags: {},
             },
-            cb: function(err) {
+            cb: function (err) {
                 var call1 = stub1.getCall(0).args;
                 assert.equal(
                     call1[0],
                     "Recipe {cyan:%s} not found. The following are available though"
                 );
 
-                var calls = stub2.getCalls().map(function(call) {
+                var calls = stub2.getCalls().map(function (call) {
                     return call.args[0].trim();
                 });
 
@@ -125,7 +125,7 @@ describe("E2E CLI `recipes` command", function() {
                 console.log.restore();
 
                 done();
-            }
+            },
         });
     });
 });

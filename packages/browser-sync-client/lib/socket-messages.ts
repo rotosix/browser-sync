@@ -1,8 +1,8 @@
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { ignoreElements } from "rxjs/operators/ignoreElements";
-import { tap } from "rxjs/operators/tap";
-import { pluck } from "rxjs/operators/pluck";
+import { BehaviorSubject } from "rxjs";
+import { withLatestFrom } from "rxjs/operators";
+import { ignoreElements } from "rxjs/operators";
+import { tap } from "rxjs/operators";
+import { pluck } from "rxjs/operators";
 import { incomingScrollHandler } from "./messages/ScrollEvent";
 import { incomingHandler$ } from "./messages/ClickEvent";
 import { incomingKeyupHandler } from "./messages/KeyupEvent";

@@ -2,29 +2,29 @@ var browserSync = require("../../../");
 var sinon = require("sinon");
 var assert = require("chai").assert;
 
-describe("E2E `logSnippet` option", function() {
+describe("E2E `logSnippet` option", function () {
     var instance;
     var spy;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
         var config = {
             online: false,
             open: false,
-            logSnippet: false
+            logSnippet: false,
         };
 
         spy = sinon.spy(console, "log");
         instance = browserSync(config, done).instance;
     });
 
-    after(function() {
+    after(function () {
         instance.cleanup();
         console.log.restore();
     });
 
-    it("Can set the log snippet when given in options", function() {
+    it("Can set the log snippet when given in options", function () {
         var calls = spy.getCalls();
         var snippet = testString(
             "Copy the following snippet into your website"
@@ -32,8 +32,8 @@ describe("E2E `logSnippet` option", function() {
         var urls = testString("Access URLs");
 
         function testString(match) {
-            return calls.filter(function(call) {
-                return call.args.filter(function(arg) {
+            return calls.filter(function (call) {
+                return call.args.filter(function (arg) {
                     return arg.indexOf(match) > -1;
                 }).length;
             });

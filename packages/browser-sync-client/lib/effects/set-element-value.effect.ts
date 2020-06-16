@@ -1,8 +1,8 @@
 import { Inputs } from "../index";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import * as KeyupEvent from "../messages/KeyupEvent";
-import { tap } from "rxjs/operators/tap";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
+import { tap } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
 import { EffectNames } from "../effects";
 
 export function setElementValueEffect(

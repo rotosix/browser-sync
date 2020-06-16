@@ -14,7 +14,7 @@ module.exports = {
             path: path,
             log: log,
             namespace: "core",
-            event: "change"
+            event: "change",
         });
     },
     /**
@@ -29,7 +29,7 @@ module.exports = {
      * @param {EventEmitter} emitter
      * @param {Array} changed
      */
-    emitStreamChangedEvent: function(emitter, changed) {
+    emitStreamChangedEvent: function (emitter, changed) {
         emitter.emit("stream:changed", { changed: changed });
     },
     /**
@@ -39,7 +39,7 @@ module.exports = {
      * @param args
      * @returns {boolean}
      */
-    isStreamArg: function(name, args) {
+    isStreamArg: function (name, args) {
         if (name === "stream") {
             return true;
         }
@@ -60,5 +60,5 @@ module.exports = {
         }
 
         return false;
-    }
+    },
 };

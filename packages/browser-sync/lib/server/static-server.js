@@ -20,7 +20,7 @@ module.exports = function createServer(bs) {
         /**
          * Add directory Middleware if given in server.directory
          */
-        .update("middleware", function(mw) {
+        .update("middleware", function (mw) {
             if (!server.get("directory")) {
                 return mw;
             }
@@ -29,23 +29,23 @@ module.exports = function createServer(bs) {
                 route: "",
                 handle: serveIndex(resolve(basedirs[0]), {
                     icons: true,
-                    view: "details"
+                    view: "details",
                 }),
-                id: "Browsersync Server Directory Middleware"
+                id: "Browsersync Server Directory Middleware",
             });
         })
         /**
          * Add middleware for server.baseDir Option
          */
-        .update("middleware", function(mw) {
+        .update("middleware", function (mw) {
             return mw.concat(
-                basedirs.map(function(root) {
+                basedirs.map(function (root) {
                     return {
                         route: "",
                         id:
                             "Browsersync Server ServeStatic Middleware - " +
                             _serveStatic++,
-                        handle: serveStatic(resolve(root), serveStaticOptions)
+                        handle: serveStatic(resolve(root), serveStaticOptions),
                     };
                 })
             );
@@ -53,13 +53,13 @@ module.exports = function createServer(bs) {
         /**
          * Add middleware for server.routes
          */
-        .update("middleware", function(mw) {
+        .update("middleware", function (mw) {
             if (!server.get("routes")) {
                 return mw;
             }
 
             return mw.concat(
-                server.get("routes").map(function(root, urlPath) {
+                server.get("routes").map(function (root, urlPath) {
                     // strip trailing slash
                     if (urlPath[urlPath.length - 1] === "/") {
                         urlPath = urlPath.slice(0, -1);
@@ -69,7 +69,7 @@ module.exports = function createServer(bs) {
                         id:
                             "Browsersync Server Routes Middleware - " +
                             _routes++,
-                        handle: serveStatic(resolve(root))
+                        handle: serveStatic(resolve(root)),
                     };
                 })
             );

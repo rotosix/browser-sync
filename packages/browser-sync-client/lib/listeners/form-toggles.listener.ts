@@ -1,18 +1,18 @@
 import { IncomingSocketNames, OutgoingSocketEvent } from "../socket-messages";
 import { getElementData } from "../browser.utils";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { createTimedBooleanSwitch } from "../utils";
 import * as FormToggleEvent from "../messages/FormToggleEvent";
-import { filter } from "rxjs/operators/filter";
-import { skip } from "rxjs/operators/skip";
-import { pluck } from "rxjs/operators/pluck";
-import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { map } from "rxjs/operators/map";
-import { switchMap } from "rxjs/operators/switchMap";
+import { filter } from "rxjs/operators";
+import { skip } from "rxjs/operators";
+import { pluck } from "rxjs/operators";
+import { distinctUntilChanged } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { switchMap } from "rxjs/operators";
 import { Inputs } from "../index";
-import { empty } from "rxjs/observable/empty";
-import { fromEvent } from "rxjs/observable/fromEvent";
+import { EMPTY } from "rxjs";
+import { fromEvent } from "rxjs";
 
 export function getFormTogglesStream(
     document: Document,
@@ -31,13 +31,13 @@ export function getFormTogglesStream(
         distinctUntilChanged(),
         switchMap(canToggle => {
             if (!canToggle) {
-                return empty();
+                return EMPTY;
             }
-            return fromEvent(document, "change", true).pipe(
-                map((e: Event) => e.target || e.srcElement),
+            return fromEvent(document, "change").pipe(
+                map((e: Event) => e.target || e.currentTarget),
                 filter((elem: HTMLInputElement) => elem.tagName === "SELECT"),
                 withLatestFrom(canSync$),
-                filter(([, canSync]) => canSync),
+                filter(([, canSync]) => Boolean(canSync)),
                 map(([elem, canSync]: [HTMLInputElement, boolean]) => {
                     const data = getElementData(elem);
 

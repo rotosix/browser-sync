@@ -4,8 +4,8 @@ var sinon = require("sinon");
 var assert = require("chai").assert;
 var File = require("vinyl");
 
-describe("API: .reload()", function() {
-    it("should accept a file path as a string", function(done) {
+describe("API: .reload()", function () {
+    it("should accept a file path as a string", function (done) {
         browserSync.reset();
 
         var scheduler = require("../../utils").getScheduler();
@@ -14,10 +14,10 @@ describe("API: .reload()", function() {
             {
                 logLevel: "silent",
                 debug: {
-                    scheduler: scheduler
-                }
+                    scheduler: scheduler,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 var emitterStub = sinon.spy(bs.emitter, "emit");
 
                 browserSync.reload("css/core.css");
@@ -29,7 +29,7 @@ describe("API: .reload()", function() {
                     log: true,
                     namespace: "core",
                     event: "change",
-                    ext: "css"
+                    ext: "css",
                 });
 
                 bs.cleanup();
@@ -38,7 +38,7 @@ describe("API: .reload()", function() {
             }
         );
     });
-    it("only calls reload once if the array contains a filepath that will cause a reload", function(done) {
+    it("only calls reload once if the array contains a filepath that will cause a reload", function (done) {
         browserSync.reset();
 
         var scheduler = require("../../utils").getScheduler();
@@ -47,10 +47,10 @@ describe("API: .reload()", function() {
             {
                 logLevel: "silent",
                 debug: {
-                    scheduler: scheduler
-                }
+                    scheduler: scheduler,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 var emitterStub = sinon.spy(bs.emitter, "emit");
 
                 browserSync.reload(["css/core.css", "index.html"]);
@@ -65,7 +65,7 @@ describe("API: .reload()", function() {
             }
         );
     });
-    it("calls reload multiple times if all items can be injected", function(done) {
+    it("calls reload multiple times if all items can be injected", function (done) {
         browserSync.reset();
 
         var scheduler = require("../../utils").getScheduler();
@@ -74,10 +74,10 @@ describe("API: .reload()", function() {
             {
                 logLevel: "silent",
                 debug: {
-                    scheduler: scheduler
-                }
+                    scheduler: scheduler,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 var emitterStub = sinon.spy(bs.emitter, "emit");
 
                 browserSync.reload(["css/core.css", "ie.css"]);
@@ -92,7 +92,7 @@ describe("API: .reload()", function() {
                     log: true,
                     namespace: "core",
                     event: "change",
-                    ext: "css"
+                    ext: "css",
                 });
                 sinon.assert.calledWithExactly(emitterStub, "file:changed", {
                     path: "ie.css",
@@ -100,7 +100,7 @@ describe("API: .reload()", function() {
                     log: true,
                     namespace: "core",
                     event: "change",
-                    ext: "css"
+                    ext: "css",
                 });
 
                 bs.cleanup();
@@ -108,7 +108,7 @@ describe("API: .reload()", function() {
             }
         );
     });
-    it("should accept wildcards for files extensions eg: *.css", function(done) {
+    it("should accept wildcards for files extensions eg: *.css", function (done) {
         browserSync.reset();
 
         var scheduler = require("../../utils").getScheduler();
@@ -117,10 +117,10 @@ describe("API: .reload()", function() {
             {
                 logLevel: "silent",
                 debug: {
-                    scheduler: scheduler
-                }
+                    scheduler: scheduler,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 var emitterStub = sinon.spy(bs.emitter, "emit");
 
                 browserSync.reload("*.css");
@@ -133,7 +133,7 @@ describe("API: .reload()", function() {
                     log: true,
                     namespace: "core",
                     event: "change",
-                    ext: "css"
+                    ext: "css",
                 });
 
                 bs.cleanup(done);
@@ -145,7 +145,7 @@ describe("API: .reload()", function() {
      * This is an old signature that, whilst we must continue to support,
      * is now deferred to the stream method.
      */
-    it("should reload browser if once:true given as arg", function(done) {
+    it("should reload browser if once:true given as arg", function (done) {
         browserSync.reset();
 
         var scheduler = require("../../utils").getScheduler();
@@ -154,10 +154,10 @@ describe("API: .reload()", function() {
             {
                 logLevel: "silent",
                 debug: {
-                    scheduler: scheduler
-                }
+                    scheduler: scheduler,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 var emitterStub = sinon.spy(bs.emitter, "emit");
                 var stream = browserSync.reload({ stream: true, once: true });
                 stream.write(new File({ path: "styles.css" }));

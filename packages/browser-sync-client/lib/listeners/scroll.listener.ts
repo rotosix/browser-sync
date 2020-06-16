@@ -4,18 +4,18 @@ import {
     getScrollPosition,
     getScrollPositionForElement
 } from "../browser.utils";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import * as ScrollEvent from "../messages/ScrollEvent";
-import { filter } from "rxjs/operators/filter";
-import { map } from "rxjs/operators/map";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
+import { filter } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
 import { Inputs } from "../index";
-import { pluck } from "rxjs/operators/pluck";
-import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
-import { switchMap } from "rxjs/operators/switchMap";
-import { empty } from "rxjs/observable/empty";
-import { skip } from "rxjs/operators/skip";
-import { fromEvent } from "rxjs/observable/fromEvent";
+import { pluck } from "rxjs/operators";
+import { distinctUntilChanged } from "rxjs/operators";
+import { switchMap } from "rxjs/operators";
+import { EMPTY } from "rxjs";
+import { skip } from "rxjs/operators";
+import { fromEvent } from "rxjs";
 
 export function getScrollStream(
     window: Window,
@@ -44,8 +44,8 @@ export function getScrollStream(
         pluck("ghostMode", "scroll"),
         distinctUntilChanged(),
         switchMap(scroll => {
-            if (!scroll) return empty();
-            return fromEvent(document, "scroll", true).pipe(
+            if (!scroll) return EMPTY;
+            return fromEvent(document, "scroll").pipe(
                 map((e: Event) => e.target),
                 withLatestFrom(canSync$, elemMap$),
                 filter(([, canSync]) => Boolean(canSync)),

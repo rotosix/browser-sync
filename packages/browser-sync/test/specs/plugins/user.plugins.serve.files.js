@@ -7,33 +7,33 @@ var path = require("path");
 var connect = require("connect");
 var serveStatic = require("serve-static");
 
-describe("Plugins: Should be able to call `serveFile` on the instance when in server mode", function() {
+describe("Plugins: Should be able to call `serveFile` on the instance when in server mode", function () {
     var PLUGIN_NAME = "KITTENZ";
-    it("should serve the file", function(done) {
+    it("should serve the file", function (done) {
         browserSync.reset();
 
         var config = {
             logLevel: "silent",
             open: false,
-            server: "test/fixtures"
+            server: "test/fixtures",
         };
 
         browserSync.use({
-            plugin: function(opts, bs) {
+            plugin: function (opts, bs) {
                 bs.serveFile("/shane", {
                     type: "text/css",
-                    content: "Hi there"
+                    content: "Hi there",
                 });
             },
-            "plugin:name": PLUGIN_NAME
+            "plugin:name": PLUGIN_NAME,
         });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             request(bs.server)
                 .get("/shane")
                 .set("accept", "text/html")
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     assert.include(res.text, "Hi there");
                     assert.equal(res.headers["content-type"], "text/css");
                     bs.cleanup();
@@ -43,32 +43,32 @@ describe("Plugins: Should be able to call `serveFile` on the instance when in se
     });
 });
 
-describe("Plugins: Should be able to call `serveFile` on the instance when in snippet mode", function() {
+describe("Plugins: Should be able to call `serveFile` on the instance when in snippet mode", function () {
     var PLUGIN_NAME = "KITTENZ";
-    it("should serve the file", function(done) {
+    it("should serve the file", function (done) {
         browserSync.reset();
 
         var config = {
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
         browserSync.use({
-            plugin: function(opts, bs) {
+            plugin: function (opts, bs) {
                 bs.serveFile("/shane", {
                     type: "text/css",
-                    content: "Hi there"
+                    content: "Hi there",
                 });
             },
-            "plugin:name": PLUGIN_NAME
+            "plugin:name": PLUGIN_NAME,
         });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             request(bs.server)
                 .get("/shane")
                 .set("accept", "text/html")
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     assert.include(res.text, "Hi there");
                     assert.equal(res.headers["content-type"], "text/css");
                     bs.cleanup();
@@ -78,10 +78,10 @@ describe("Plugins: Should be able to call `serveFile` on the instance when in sn
     });
 });
 
-describe("Plugins: Should be able to call `serveFile` on the instance when in proxy mode", function() {
+describe("Plugins: Should be able to call `serveFile` on the instance when in proxy mode", function () {
     var PLUGIN_NAME = "KITTENZ";
 
-    it("should serve the file + browserSync file", function(done) {
+    it("should serve the file + browserSync file", function (done) {
         browserSync.reset();
 
         var testApp = connect().use(
@@ -95,25 +95,25 @@ describe("Plugins: Should be able to call `serveFile` on the instance when in pr
         var config = {
             logLevel: "silent",
             open: false,
-            proxy: "http://localhost:" + port
+            proxy: "http://localhost:" + port,
         };
 
         browserSync.use({
-            plugin: function(opts, bs) {
+            plugin: function (opts, bs) {
                 bs.serveFile("/shane", {
                     type: "text/css",
-                    content: "Hi there"
+                    content: "Hi there",
                 });
             },
-            "plugin:name": PLUGIN_NAME
+            "plugin:name": PLUGIN_NAME,
         });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             request(bs.server)
                 .get("/shane")
                 .set("accept", "text/html")
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     assert.include(res.text, "Hi there");
                     assert.equal(res.headers["content-type"], "text/css");
                     stubServer.close();

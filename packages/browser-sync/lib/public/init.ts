@@ -7,8 +7,8 @@ import { merge, printErrors } from "../cli/cli-options";
  * @param {Object} pjson
  * @returns {Function}
  */
-module.exports = function(browserSync, name, pjson) {
-    return function() {
+module.exports = function (browserSync, name, pjson) {
+    return function () {
         /**
          * Handle new + old signatures for init.
          */

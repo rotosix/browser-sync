@@ -1,13 +1,13 @@
 import { getBrowserScrollPosition } from "./browser.utils";
 import { EffectNames } from "./effects";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { Inputs } from "./index";
-import { empty } from "rxjs/observable/empty";
-import { of } from "rxjs/observable/of";
+import { EMPTY } from "rxjs";
+import { of } from "rxjs";
 import * as Log from "./log";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { map } from "rxjs/operators/map";
+import { withLatestFrom } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { setWindowName } from "./dom-effects/set-window-name.dom-effect";
 import { setScroll } from "./dom-effects/set-scroll.dom-effect";
 
@@ -57,7 +57,7 @@ export function initWindowName(window: Window) {
             Log.consoleDebug(`[ScrollRestore] x = ${x} y = ${y}`)
         );
     }
-    return empty();
+    return EMPTY;
 }
 
 export const scrollRestoreHandlers$ = new BehaviorSubject({
@@ -69,7 +69,7 @@ export const scrollRestoreHandlers$ = new BehaviorSubject({
     //             if (options.scrollRestoreTechnique === "window.name") {
     //                 return initWindowName(window);
     //             }
-    //             return empty();
+    //             return EMPTY;
     //         })
     //     );
     // },

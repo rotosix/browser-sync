@@ -10,7 +10,7 @@ var stream = require("./stream");
  * @param emitter
  * @returns {Function}
  */
-module.exports = function(emitter) {
+module.exports = function (emitter) {
     /**
      * Inform browsers about file changes.
      *
@@ -46,7 +46,7 @@ module.exports = function(emitter) {
          * reload(["core.css, "ie.css"])
          */
         if (Array.isArray(opts)) {
-            return opts.forEach(function(filepath) {
+            return opts.forEach(function (filepath) {
                 publicUtils.emitChangeEvent(emitter, filepath, true);
             });
         }

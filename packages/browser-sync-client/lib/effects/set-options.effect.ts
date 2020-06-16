@@ -1,10 +1,8 @@
 import { Inputs } from "../index";
-import { Observable } from "rxjs/Observable";
-import { ignoreElements } from "rxjs/operators/ignoreElements";
-import { tap } from "rxjs/operators/tap";
-import { map } from "rxjs/operators/map";
+import { Observable } from "rxjs";
+import { ignoreElements } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 import { EffectNames } from "../effects";
-import { consoleInfo } from "../log";
 
 /**
  * Set the local client options

@@ -3,22 +3,22 @@ var assert = require("chai").assert;
 var File = require("vinyl");
 var sinon = require("sinon");
 
-describe("API: .stream() noop", function() {
-    before(function() {
+describe("API: .stream() noop", function () {
+    before(function () {
         browserSync.reset();
     });
 
-    it("should can handle a reload + stream call when there's no instance", function() {
-        assert.doesNotThrow(function() {
+    it("should can handle a reload + stream call when there's no instance", function () {
+        assert.doesNotThrow(function () {
             var stream = browserSync.stream();
             stream.write(new File({ path: "styles.css" }));
             stream.end();
         });
     });
-    it("should can handle a reload + stream call after there IS an instance", function(done) {
+    it("should can handle a reload + stream call after there IS an instance", function (done) {
         var emitterStub;
         var scheduler = require("../../utils").getScheduler();
-        var bs = browserSync({ debug: { scheduler: scheduler } }, function(
+        var bs = browserSync({ debug: { scheduler: scheduler } }, function (
             err,
             _bs
         ) {
@@ -37,7 +37,7 @@ describe("API: .stream() noop", function() {
                 log: false,
                 namespace: "core",
                 event: "change",
-                ext: "css"
+                ext: "css",
             });
             _bs.cleanup(done);
         });

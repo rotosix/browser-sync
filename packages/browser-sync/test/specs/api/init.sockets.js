@@ -2,15 +2,15 @@ var browserSync = require("../../../");
 
 var assert = require("chai").assert;
 
-describe("API: .sockets", function() {
-    it("has access before Browsersync is running via stubs", function(done) {
+describe("API: .sockets", function () {
+    it("has access before Browsersync is running via stubs", function (done) {
         browserSync.reset();
         var bs = browserSync.create();
         bs.init(
             {
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 bs.cleanup();
                 done();
             }
@@ -18,14 +18,14 @@ describe("API: .sockets", function() {
         assert.isFunction(bs.sockets.on);
         assert.isFunction(bs.sockets.emit);
     });
-    it("has access after Browsersync is running", function(done) {
+    it("has access after Browsersync is running", function (done) {
         browserSync.reset();
         var bs = browserSync.create();
         bs.init(
             {
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, _bs) {
+            function (err, _bs) {
                 assert.isFunction(bs.sockets.emit);
                 assert.isFunction(bs.sockets.on);
                 _bs.cleanup();
@@ -33,13 +33,13 @@ describe("API: .sockets", function() {
             }
         );
     });
-    it("has access before Browsersync is running via main module export + stubs", function(done) {
+    it("has access before Browsersync is running via main module export + stubs", function (done) {
         browserSync.reset();
         var bs = browserSync(
             {
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 bs.cleanup();
                 done();
             }

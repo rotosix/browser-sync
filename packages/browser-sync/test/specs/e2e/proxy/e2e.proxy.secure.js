@@ -6,10 +6,10 @@ var assert = require("chai").assert;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-describe("E2E TLS proxy test", function() {
+describe("E2E TLS proxy test", function () {
     this.timeout(15000);
 
-    it("Set's a HTTPS url", function(done) {
+    it("Set's a HTTPS url", function (done) {
         browserSync.reset();
 
         var app = testUtils.getApp(Immutable.Map({ scheme: "https" }));
@@ -19,10 +19,10 @@ describe("E2E TLS proxy test", function() {
         var config = {
             proxy: "https://localhost:" + app.server.address().port,
             open: false,
-            logLevel: "silent"
+            logLevel: "silent",
         };
 
-        browserSync.init(config, function(err, bs) {
+        browserSync.init(config, function (err, bs) {
             bs.cleanup();
             app.server.close();
 
@@ -33,7 +33,7 @@ describe("E2E TLS proxy test", function() {
         });
     });
 
-    it("Set's a HTTPS url with none-https proxy target", function(done) {
+    it("Set's a HTTPS url with none-https proxy target", function (done) {
         browserSync.reset();
 
         var app = testUtils.getApp(Immutable.Map({ scheme: "http" }));
@@ -44,10 +44,10 @@ describe("E2E TLS proxy test", function() {
             proxy: "http://localhost:" + app.server.address().port,
             open: false,
             logLevel: "silent",
-            https: true
+            https: true,
         };
 
-        browserSync.init(config, function(err, bs) {
+        browserSync.init(config, function (err, bs) {
             if (err) {
                 throw err;
             }
@@ -63,7 +63,7 @@ describe("E2E TLS proxy test", function() {
             request(bs.options.getIn(["urls", "local"]))
                 .get("/index.html")
                 .set("accept", "text/html")
-                .expect(200, function(err, res) {
+                .expect(200, function (err, res) {
                     assert.equal(res.text, expected);
                     bs.cleanup();
                     app.server.close();
@@ -72,7 +72,7 @@ describe("E2E TLS proxy test", function() {
         });
     });
 
-    it("proxies over https and injects snippet", function(done) {
+    it("proxies over https and injects snippet", function (done) {
         browserSync.reset();
 
         var app = testUtils.getApp(Immutable.Map({ scheme: "https" }));
@@ -82,10 +82,10 @@ describe("E2E TLS proxy test", function() {
         var config = {
             proxy: "https://localhost:" + app.server.address().port,
             open: false,
-            logLevel: "silent"
+            logLevel: "silent",
         };
 
-        browserSync.init(config, function(err, bs) {
+        browserSync.init(config, function (err, bs) {
             assert.isString(bs.options.get("snippet"));
 
             var expected = app.html.replace(
@@ -96,7 +96,7 @@ describe("E2E TLS proxy test", function() {
             request(bs.options.getIn(["urls", "local"]))
                 .get("/index.html")
                 .set("accept", "text/html")
-                .expect(200, expected, function() {
+                .expect(200, expected, function () {
                     bs.cleanup();
                     app.server.close();
                     done();

@@ -7,7 +7,7 @@ var _ = require("../lodash.custom");
  * Browsersync server
  * Three available modes: Snippet, Server or Proxy
  */
-module.exports.plugin = function(bs) {
+module.exports.plugin = function (bs) {
     var debug = bs.debug;
     var proxy = bs.options.get("proxy");
     var type = bs.options.get("mode");
@@ -42,7 +42,7 @@ module.exports.plugin = function(bs) {
         /**
          * Hack to deal with https://github.com/socketio/socket.io/issues/1602#issuecomment-224270022
          */
-        bs.registerCleanupTask(function() {
+        bs.registerCleanupTask(function () {
             if (bs.io && bs.io.sockets) {
                 setCloseReceived(bs.io.sockets);
             }
@@ -54,13 +54,13 @@ module.exports.plugin = function(bs) {
         /**
          * Destroy the server on cleanup
          */
-        bs.registerCleanupTask(function() {
+        bs.registerCleanupTask(function () {
             bsServer.server.destroy();
         });
     }
 
     function setCloseReceived(io) {
-        Object.keys(io.sockets).forEach(function(key) {
+        Object.keys(io.sockets).forEach(function (key) {
             _.set(
                 io.sockets[key],
                 "conn.transport.socket._closeReceived",
@@ -73,7 +73,7 @@ module.exports.plugin = function(bs) {
 
     return {
         server: bsServer.server,
-        app: bsServer.app
+        app: bsServer.app,
     };
 };
 

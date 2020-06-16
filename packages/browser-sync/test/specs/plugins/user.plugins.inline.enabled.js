@@ -2,8 +2,8 @@ var browserSync = require("../../../");
 
 var assert = require("chai").assert;
 
-describe("Plugins: Setting the default state (false) if given in options", function() {
-    it("Should auto disable a plugin when options given (1)", function(done) {
+describe("Plugins: Setting the default state (false) if given in options", function () {
+    it("Should auto disable a plugin when options given (1)", function (done) {
         browserSync.reset();
 
         var config = {
@@ -13,13 +13,13 @@ describe("Plugins: Setting the default state (false) if given in options", funct
                     module: "bs-snippet-injector",
                     options: {
                         enabled: false,
-                        file: ""
-                    }
-                }
-            ]
+                        file: "",
+                    },
+                },
+            ],
         };
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             assert.equal(bs.getUserPlugins().length, 1);
             assert.isFalse(bs.getUserPlugins()[0].active);
             bs.cleanup();
@@ -28,8 +28,8 @@ describe("Plugins: Setting the default state (false) if given in options", funct
     });
 });
 
-describe("Plugins: Setting the default state (true) if given in options", function() {
-    it("Should auto disable a plugin when options given (2)", function(done) {
+describe("Plugins: Setting the default state (true) if given in options", function () {
+    it("Should auto disable a plugin when options given (2)", function (done) {
         browserSync.reset();
 
         var config = {
@@ -38,13 +38,13 @@ describe("Plugins: Setting the default state (true) if given in options", functi
                 {
                     module: "bs-snippet-injector",
                     options: {
-                        enabled: true
-                    }
-                }
-            ]
+                        enabled: true,
+                    },
+                },
+            ],
         };
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             assert.equal(bs.getUserPlugins().length, 1);
             assert.isTrue(bs.getUserPlugins()[0].active);
             bs.cleanup();

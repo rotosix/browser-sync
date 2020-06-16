@@ -24,11 +24,11 @@ var defaultHttpProxyOptions = Map({
      * This allows our self-signed certs to be used for development
      */
     secure: false,
-    ws: true
+    ws: true,
 });
 
 var defaultCookieOptions = Map({
-    stripDomain: true
+    stripDomain: true,
 });
 
 var ProxyOption = Immutable.Record({
@@ -56,7 +56,7 @@ var ProxyOption = Immutable.Record({
     cookies: Map(defaultCookieOptions),
     ws: false,
     middleware: List([]),
-    reqHeaders: undefined
+    reqHeaders: undefined,
 });
 
 /**
@@ -67,24 +67,21 @@ var ProxyOption = Immutable.Record({
 module.exports = function createProxyServer(bs) {
     var opt = new ProxyOption().mergeDeep(bs.options.get("proxy"));
     var proxy = httpProxy.createProxyServer(
-        opt
-            .get("proxyOptions")
-            .set("target", opt.get("target"))
-            .toJS()
+        opt.get("proxyOptions").set("target", opt.get("target")).toJS()
     );
     var target = opt.get("target");
     var proxyReq = getProxyReqFunctions(opt.get("proxyReq"), opt, bs);
     var proxyRes = getProxyResFunctions(opt.get("proxyRes"), opt);
     var proxyResWs = opt.get("proxyReqWs");
-    bs.options = bs.options.update("middleware", function(mw) {
+    bs.options = bs.options.update("middleware", function (mw) {
         return mw.concat({
             id: "Browsersync Proxy",
             route: opt.get("route"),
-            handle: function(req, res) {
+            handle: function (req, res) {
                 proxy.web(req, res, {
-                    target: target
+                    target: target,
                 });
-            }
+            },
         });
     });
 
@@ -98,7 +95,7 @@ module.exports = function createProxyServer(bs) {
 
     if (opt.get("ws")) {
         // debug(`+ ws upgrade for: ${x.get("target")}`);
-        browserSyncServer.server.on("upgrade", function(req, socket, head) {
+        browserSyncServer.server.on("upgrade", function (req, socket, head) {
             proxy.ws(req, socket, head);
         });
     }
@@ -113,7 +110,7 @@ module.exports = function createProxyServer(bs) {
     /**
      * Handle Proxy errors
      */
-    proxy.on("error", function(err) {
+    proxy.on("error", function (err) {
         if (typeof opt.get("errHandler") === "function") {
             opt.get("errHandler").call(null, err);
         }
@@ -126,9 +123,9 @@ module.exports = function createProxyServer(bs) {
      */
     function applyFns(name, fns) {
         if (!List.isList(fns)) fns = [fns];
-        proxy.on(name, function() {
+        proxy.on(name, function () {
             var args = arguments;
-            fns.forEach(function(fn) {
+            fns.forEach(function (fn) {
                 if (typeof fn === "function") {
                     fn.apply(null, args);
                 }
@@ -171,8 +168,8 @@ function getProxyReqFunctions(reqFns, opt, bs) {
     if (typeof reqHeaders === "function") {
         var output = reqHeaders.call(bs, opt.toJS());
         if (Object.keys(output).length) {
-            return reqFns.concat(function(proxyReq) {
-                Object.keys(output).forEach(function(key) {
+            return reqFns.concat(function (proxyReq) {
+                Object.keys(output).forEach(function (key) {
                     proxyReq.setHeader(key, output[key]);
                 });
             });
@@ -187,8 +184,8 @@ function getProxyReqFunctions(reqFns, opt, bs) {
      * }
      */
     if (Map.isMap(reqHeaders)) {
-        return reqFns.concat(function(proxyReq) {
-            reqHeaders.forEach(function(value, key) {
+        return reqFns.concat(function (proxyReq) {
+            reqHeaders.forEach(function (value, key) {
                 proxyReq.setHeader(key, value);
             });
         });

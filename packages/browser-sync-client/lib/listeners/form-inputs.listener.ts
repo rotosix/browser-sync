@@ -1,17 +1,17 @@
 import { IncomingSocketNames, OutgoingSocketEvent } from "../socket-messages";
 import { getElementData } from "../browser.utils";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { createTimedBooleanSwitch } from "../utils";
 import * as KeyupEvent from "../messages/KeyupEvent";
-import { filter } from "rxjs/operators/filter";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { map } from "rxjs/operators/map";
-import { pluck } from "rxjs/operators/pluck";
-import { skip } from "rxjs/operators/skip";
-import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
-import { switchMap } from "rxjs/operators/switchMap";
-import { empty } from "rxjs/observable/empty";
-import { fromEvent } from "rxjs/observable/fromEvent";
+import { filter } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { pluck } from "rxjs/operators";
+import { skip } from "rxjs/operators";
+import { distinctUntilChanged } from "rxjs/operators";
+import { switchMap } from "rxjs/operators";
+import { EMPTY } from "rxjs";
+import { fromEvent } from "rxjs";
 import { Inputs } from "../index";
 
 export function getFormInputStream(
@@ -28,20 +28,20 @@ export function getFormInputStream(
         distinctUntilChanged(),
         switchMap(formInputs => {
             if (!formInputs) {
-                return empty();
+                return EMPTY;
             }
-            return fromEvent(document.body, "keyup", true).pipe(
-                map((e: Event) => e.target || e.srcElement),
+            return fromEvent(document.body, "keyup").pipe(
+                map((e: Event) => e.target || e.currentTarget),
                 filter(
                     (target: Element) =>
                         target.tagName === "INPUT" ||
                         target.tagName === "TEXTAREA"
                 ),
                 withLatestFrom(canSync$),
-                filter(([, canSync]) => canSync),
+                filter(([, canSync]) => Boolean(canSync)),
                 map(([eventTarget]) => {
                     const target = getElementData(eventTarget);
-                    const value = eventTarget.value;
+                    const value = eventTarget.nodeValue;
 
                     return KeyupEvent.outgoing(target, value);
                 })

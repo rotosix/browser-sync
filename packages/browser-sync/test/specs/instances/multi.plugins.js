@@ -3,19 +3,19 @@ var browserSync = require("../../../");
 var sinon = require("sinon");
 var assert = require("chai").assert;
 
-describe("E2E server test with multiple instances", function() {
+describe("E2E server test with multiple instances", function () {
     this.timeout(5000);
 
     var bs, bs2, plugin1spy, plugin2spy;
 
-    before(function(done) {
+    before(function (done) {
         browserSync.reset();
 
         var config = {
             online: false,
             logLevel: "silent",
             open: false,
-            server: "test/fixtures"
+            server: "test/fixtures",
         };
 
         plugin1spy = sinon.spy();
@@ -24,10 +24,10 @@ describe("E2E server test with multiple instances", function() {
         bs = browserSync.create("first");
         bs.use(
             {
-                plugin: function(opts) {
+                plugin: function (opts) {
                     assert.equal(opts.plugin, "1");
                     plugin1spy();
-                }
+                },
             },
             { plugin: "1" }
         );
@@ -35,25 +35,25 @@ describe("E2E server test with multiple instances", function() {
         bs2 = browserSync.create("second");
         bs2.use(
             {
-                plugin: function(opts) {
+                plugin: function (opts) {
                     assert.equal(opts.plugin, "2");
                     plugin2spy();
-                }
+                },
             },
             { plugin: "2" }
         );
 
-        bs.init(config, function() {
+        bs.init(config, function () {
             bs2.init(config, done);
         });
     });
 
-    after(function() {
+    after(function () {
         browserSync.get("first").cleanup();
         browserSync.get("second").cleanup();
     });
 
-    it("uses only plugins registered to each instance", function() {
+    it("uses only plugins registered to each instance", function () {
         sinon.assert.calledOnce(plugin1spy);
         sinon.assert.calledOnce(plugin2spy);
     });

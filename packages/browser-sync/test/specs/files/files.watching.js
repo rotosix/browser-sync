@@ -7,8 +7,8 @@ var assert = require("chai").assert;
 
 var outpath = path.join(__dirname, "../../fixtures");
 
-describe("File Watcher Module", function() {
-    it("Passes options for chokidar", function(done) {
+describe("File Watcher Module", function () {
+    it("Passes options for chokidar", function (done) {
         browserSync.reset();
         browserSync.create().init(
             {
@@ -16,10 +16,10 @@ describe("File Watcher Module", function() {
                 online: false,
                 files: "css/*.css",
                 watchOptions: {
-                    debounceDelay: 4000
-                }
+                    debounceDelay: 4000,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(bs.watchers.core.watchers.length, 1);
                 assert.equal(
                     bs.watchers.core.watchers[0].options.debounceDelay,
@@ -30,7 +30,7 @@ describe("File Watcher Module", function() {
             }
         );
     });
-    it("Passes separate options for chokidar when multi given", function(done) {
+    it("Passes separate options for chokidar when multi given", function (done) {
         browserSync.reset();
         browserSync.create().init(
             {
@@ -40,19 +40,19 @@ describe("File Watcher Module", function() {
                     "css/*.css",
                     {
                         match: "*.html",
-                        fn: function(event) {
+                        fn: function (event) {
                             console.log(event);
                         },
                         options: {
-                            interval: 100
-                        }
-                    }
+                            interval: 100,
+                        },
+                    },
                 ],
                 watchOptions: {
-                    interval: 200
-                }
+                    interval: 200,
+                },
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(bs.watchers.core.watchers.length, 2);
                 assert.equal(
                     bs.watchers.core.watchers[0].options.interval,
@@ -67,7 +67,7 @@ describe("File Watcher Module", function() {
             }
         );
     });
-    it("should emit events about changed files in core namespace", function(done) {
+    it("should emit events about changed files in core namespace", function (done) {
         var tempFile = path.join(outpath, "watch-func.txt");
         var called = false;
 
@@ -81,10 +81,10 @@ describe("File Watcher Module", function() {
                 files: [
                     {
                         options: {
-                            ignoreInitial: true
+                            ignoreInitial: true,
                         },
                         match: tempFile,
-                        fn: function(event, file) {
+                        fn: function (event, file) {
                             assert.equal(event, "change");
                             assert.equal(file, tempFile);
                             assert.isFunction(this.reload);
@@ -94,20 +94,20 @@ describe("File Watcher Module", function() {
                                 done();
                                 called = true;
                             }
-                        }
-                    }
+                        },
+                    },
                 ],
                 ui: false,
                 online: false,
                 logSnippet: false,
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 bs.watchers.core.watchers[0]._events.all("change", tempFile);
             }
         );
     });
-    it("should emit events about added files when watchEvents added", function(done) {
+    it("should emit events about added files when watchEvents added", function (done) {
         var tempFile = path.join(outpath, "watch-func.txt");
         var called = false;
 
@@ -122,10 +122,10 @@ describe("File Watcher Module", function() {
                 files: [
                     {
                         options: {
-                            ignoreInitial: true
+                            ignoreInitial: true,
                         },
                         match: tempFile,
-                        fn: function(event, file) {
+                        fn: function (event, file) {
                             assert.equal(event, "add");
                             assert.equal(file, tempFile);
                             assert.isFunction(this.reload);
@@ -135,20 +135,20 @@ describe("File Watcher Module", function() {
                                 done();
                                 called = true;
                             }
-                        }
-                    }
+                        },
+                    },
                 ],
                 ui: false,
                 online: false,
                 logSnippet: false,
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 bs.watchers.core.watchers[0]._events.all("add", tempFile);
             }
         );
     });
-    it("should allow obj literal with match & options, but without callback fn", function(done) {
+    it("should allow obj literal with match & options, but without callback fn", function (done) {
         browserSync.reset();
 
         var tempFile = path.join(outpath, "watch-func.txt");
@@ -161,17 +161,17 @@ describe("File Watcher Module", function() {
                 files: [
                     {
                         options: {
-                            ignoreInitial: true
+                            ignoreInitial: true,
                         },
-                        match: tempFile
-                    }
+                        match: tempFile,
+                    },
                 ],
                 ui: false,
                 online: false,
                 logSnippet: false,
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 var spy = sinon.spy(bs.events, "emit");
 
                 bs.watchers.core.watchers[0]._events.all("change", tempFile);
@@ -188,7 +188,7 @@ describe("File Watcher Module", function() {
             }
         );
     });
-    it("should allow arrays with , in API mode", function(done) {
+    it("should allow arrays with , in API mode", function (done) {
         browserSync.reset();
         var bs = browserSync.create();
 
@@ -198,9 +198,9 @@ describe("File Watcher Module", function() {
                 ui: false,
                 online: false,
                 logSnippet: false,
-                logLevel: "silent"
+                logLevel: "silent",
             },
-            function(err, bs) {
+            function (err, bs) {
                 assert.equal(
                     bs.options.getIn(["files", "core", "globs"]).size,
                     1

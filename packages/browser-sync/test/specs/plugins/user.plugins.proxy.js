@@ -4,11 +4,11 @@ var Immutable = require("immutable");
 var sinon = require("sinon");
 var request = require("supertest");
 
-describe("Plugins: Should be able to register middleware when in proxy mode", function() {
+describe("Plugins: Should be able to register middleware when in proxy mode", function () {
     var app;
     var spy;
 
-    it("should serve the file", function(done) {
+    it("should serve the file", function (done) {
         browserSync.reset();
 
         app = testUtils.getApp(Immutable.Map({ scheme: "http" }));
@@ -19,29 +19,29 @@ describe("Plugins: Should be able to register middleware when in proxy mode", fu
         var config = {
             proxy: "http://localhost:" + app.server.address().port,
             open: false,
-            logLevel: "silent"
+            logLevel: "silent",
         };
 
         browserSync.use({
-            plugin: function() {
+            plugin: function () {
                 /* noop */
             },
             hooks: {
-                "server:middleware": function() {
-                    return function(req, res, next) {
+                "server:middleware": function () {
+                    return function (req, res, next) {
                         spy();
                         next();
                     };
-                }
+                },
             },
-            "plugin:name": "KITTENZ"
+            "plugin:name": "KITTENZ",
         });
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             request(bs.server)
                 .get("/")
                 .set("accept", "text/html")
-                .end(function() {
+                .end(function () {
                     sinon.assert.called(spy);
                     bs.cleanup();
                     done();

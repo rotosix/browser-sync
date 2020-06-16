@@ -6,14 +6,14 @@ var assert = require("chai").assert;
 var injectFileTypes = require("../../../dist/default-config").injectFileTypes;
 var handler = require("../../../dist/file-event-handler").fileChanges;
 
-describe("globally handling fle:changed events", function() {
-    it("takes an observable + options", function() {
+describe("globally handling fle:changed events", function () {
+    it("takes an observable + options", function () {
         var s = new Rx.TestScheduler();
         var options = fromJS({
             watchEvents: ["add", "change"],
             reloadDebounce: 100,
             debug: { scheduler: s },
-            injectFileTypes: injectFileTypes
+            injectFileTypes: injectFileTypes,
         });
         var obs = s.createHotObservable(
             onNext(200, { event: "change", path: "core.css" }),
@@ -29,7 +29,7 @@ describe("globally handling fle:changed events", function() {
             onNext(1005, { event: "change", path: "core8.php" })
         );
         var res = s.startScheduler(
-            function() {
+            function () {
                 return handler(obs, options);
             },
             { created: 0, subscribed: 0, disposed: 3000 }
@@ -39,14 +39,14 @@ describe("globally handling fle:changed events", function() {
         assert.equal(res.messages[1].time, 505);
         assert.equal(res.messages[2].time, 1105);
     });
-    it("takes an observable + options with delay", function() {
+    it("takes an observable + options with delay", function () {
         var s = new Rx.TestScheduler();
         var options = fromJS({
             watchEvents: ["add", "change"],
             reloadDebounce: 100,
             reloadDelay: 1000,
             debug: { scheduler: s },
-            injectFileTypes: injectFileTypes
+            injectFileTypes: injectFileTypes,
         });
         var obs = s.createHotObservable(
             onNext(200, { event: "change", path: "core.css" }),
@@ -54,7 +54,7 @@ describe("globally handling fle:changed events", function() {
             onNext(203, { event: "change", path: "core.css" })
         );
         var res = s.startScheduler(
-            function() {
+            function () {
                 return handler(obs, options);
             },
             { created: 0, subscribed: 0, disposed: 3000 }

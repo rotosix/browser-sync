@@ -5,8 +5,8 @@ var browserSync = require(path.resolve("./"));
 var pkg = require(path.resolve("package.json"));
 var cli = require(path.resolve(pkg.bin)).default;
 
-describe("E2E CLI `files` arg - multi globs", function() {
-    it("Converts cli files arg to correct namespaced watchers", function(done) {
+describe("E2E CLI `files` arg - multi globs", function () {
+    it("Converts cli files arg to correct namespaced watchers", function (done) {
         browserSync.reset();
         cli({
             cli: {
@@ -14,10 +14,10 @@ describe("E2E CLI `files` arg - multi globs", function() {
                 flags: {
                     logLevel: "silent",
                     open: false,
-                    files: ["*.html, css/*.css"]
-                }
+                    files: ["*.html, css/*.css"],
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 assert.equal(
                     bs.options.getIn(["files", "core", "globs"]).size,
                     2
@@ -25,13 +25,13 @@ describe("E2E CLI `files` arg - multi globs", function() {
                 assert.isTrue(Array.isArray(bs.watchers.core.watchers));
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
 });
 
-describe("E2E CLI `files` arg, single glob", function() {
-    it("Converts cli files arg to correct namespaced watchers", function(done) {
+describe("E2E CLI `files` arg, single glob", function () {
+    it("Converts cli files arg to correct namespaced watchers", function (done) {
         browserSync.reset();
         cli({
             cli: {
@@ -39,10 +39,10 @@ describe("E2E CLI `files` arg, single glob", function() {
                 flags: {
                     logLevel: "silent",
                     open: false,
-                    files: ["*.html"]
-                }
+                    files: ["*.html"],
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 assert.equal(
                     bs.options.getIn(["files", "core", "globs"]).size,
                     1
@@ -50,13 +50,13 @@ describe("E2E CLI `files` arg, single glob", function() {
                 assert.isTrue(Array.isArray(bs.watchers.core.watchers));
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
 });
 
-describe("E2E CLI `files` arg, with commas", function() {
-    it("Converts cli files arg", function(done) {
+describe("E2E CLI `files` arg, with commas", function () {
+    it("Converts cli files arg", function (done) {
         browserSync.reset();
         cli({
             cli: {
@@ -64,10 +64,10 @@ describe("E2E CLI `files` arg, with commas", function() {
                 flags: {
                     logLevel: "silent",
                     open: false,
-                    files: ["*.css,*.html"]
-                }
+                    files: ["*.css,*.html"],
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 assert.equal(
                     bs.options.getIn(["files", "core", "globs"]).size,
                     2
@@ -75,7 +75,7 @@ describe("E2E CLI `files` arg, with commas", function() {
                 assert.isTrue(Array.isArray(bs.watchers.core.watchers));
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
 });

@@ -1,8 +1,8 @@
 import socket = require("socket.io-client");
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { of } from "rxjs/observable/of";
-import { share } from "rxjs/operators/share";
+import { Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs";
+import { of } from "rxjs";
+import { share } from "rxjs/operators";
 
 /**
  * Alias for socket.emit

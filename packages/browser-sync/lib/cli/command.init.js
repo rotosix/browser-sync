@@ -10,6 +10,6 @@ var info = require("./cli-info");
  *
  * @param opts
  */
-module.exports = function(opts) {
+module.exports = function (opts) {
     info.makeConfig(process.cwd(), opts.cb);
 };

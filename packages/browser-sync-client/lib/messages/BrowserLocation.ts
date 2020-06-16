@@ -1,9 +1,9 @@
 import { Inputs } from "../index";
-import { pluck } from "rxjs/operators/pluck";
-import { filter } from "rxjs/operators/filter";
-import { map } from "rxjs/operators/map";
-import { Observable } from "rxjs/Observable";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
+import { pluck } from "rxjs/operators";
+import { filter } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { withLatestFrom } from "rxjs/operators";
 import { browserSetLocation } from "../effects/browser-set-location.effect";
 
 export interface IncomingPayload {

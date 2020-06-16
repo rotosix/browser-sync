@@ -5,6 +5,7 @@ const path = require('path');
 const context = [__dirname];
 
 module.exports = {
+    mode: 'production', // 'development' or 'production'
     context: path.join.apply(null, context),
     entry: [
         './lib/index'
@@ -23,7 +24,7 @@ module.exports = {
         // }
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.[tj]sx?$/,
                 exclude: /node_modules/,

@@ -1,8 +1,8 @@
 import { Inputs } from "../index";
-import { ignoreElements } from "rxjs/operators/ignoreElements";
-import { withLatestFrom } from "rxjs/operators/withLatestFrom";
-import { tap } from "rxjs/operators/tap";
-import { Observable } from "rxjs/Observable";
+import { ignoreElements } from "rxjs/operators";
+import { withLatestFrom } from "rxjs/operators";
+import { tap } from "rxjs/operators";
+import { Observable } from "rxjs";
 import { Events } from "../dom-effects";
 
 export function setWindowNameDomEffect(xs: Observable<string>, inputs: Inputs) {

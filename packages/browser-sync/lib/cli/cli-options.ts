@@ -24,7 +24,7 @@ import {
     fixRewriteRules,
     setMiddleware,
     setOpen,
-    setUiPort
+    setUiPort,
 } from "../options";
 import { BsErrors } from "../bin";
 import { handleHostOption } from "./transforms/handleHostOption";
@@ -69,7 +69,7 @@ export function merge(input) {
         fixRewriteRules,
         setMiddleware,
         setOpen,
-        setUiPort
+        setUiPort,
     ];
 
     const output = transforms.reduce(
@@ -88,7 +88,7 @@ export function merge(input) {
  * @param string
  */
 export function explodeFilesArg(string): string {
-    return string.split(",").map(item => item.trim());
+    return string.split(",").map((item) => item.trim());
 }
 
 /**
@@ -104,7 +104,7 @@ export function makeFilesArg(value) {
     }
 
     if (List.isList(value) && value.size) {
-        value.forEach(function(value) {
+        value.forEach(function (value) {
             if (_.isString(value)) {
                 globs.push(value);
             } else {
@@ -117,24 +117,24 @@ export function makeFilesArg(value) {
 
     return {
         globs: globs,
-        objs: objs
+        objs: objs,
     };
 }
 
 export function printErrors(errors: BsErrors) {
     return errors
-        .map(error =>
+        .map((error) =>
             [
                 `Error Type:    ${error.type}`,
                 `Error Level:   ${error.level}`,
-                error.errors.map(item =>
+                error.errors.map((item) =>
                     [
                         `Error Message: ${item.error.message}`,
-                        item.meta ? item.meta().join("\n") : ""
+                        item.meta ? item.meta().join("\n") : "",
                     ]
                         .filter(Boolean)
                         .join("\n")
-                )
+                ),
             ].join("\n")
         )
         .join("\n\n");

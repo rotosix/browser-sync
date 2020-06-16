@@ -7,8 +7,8 @@ var fs = require("fs");
 var cli = require(path.resolve(pkg.bin)).default;
 var utils = require("../../../../dist/utils");
 
-describe("CLI: reading config file from disk", function() {
-    it("reads a config file", function(done) {
+describe("CLI: reading config file from disk", function () {
+    it("reads a config file", function (done) {
         browserSync.reset();
         cli({
             cli: {
@@ -16,20 +16,20 @@ describe("CLI: reading config file from disk", function() {
                 flags: {
                     logLevel: "silent",
                     config: "test/fixtures/config/si-config.js",
-                    open: false
-                }
+                    open: false,
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 assert.equal(
                     bs.options.getIn(["server", "baseDir", 0]),
                     "test/fixtures"
                 );
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
-    it("returns an error if a config file does not exist", function(done) {
+    it("returns an error if a config file does not exist", function (done) {
         var stub = require("sinon").stub(utils, "fail");
         browserSync.reset();
         cli({
@@ -38,10 +38,10 @@ describe("CLI: reading config file from disk", function() {
                 flags: {
                     logLevel: "silent",
                     config: "test/fixtures/config/sioops.js",
-                    open: false
-                }
+                    open: false,
+                },
             },
-            cb: function(err, bs) {
+            cb: function (err, bs) {
                 var err = stub.getCall(0).args[1];
                 assert.equal(
                     err.message,
@@ -50,7 +50,7 @@ describe("CLI: reading config file from disk", function() {
                 utils.fail.restore();
                 bs.cleanup();
                 done();
-            }
+            },
         });
     });
 });

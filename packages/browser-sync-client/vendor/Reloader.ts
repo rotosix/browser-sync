@@ -5,20 +5,20 @@
  *
  */
 import {getLocation, pathFromUrl, pathsMatch, pickBestMatch, splitUrl, updateSearch, array} from "../lib/utils";
-import {empty} from "rxjs/observable/empty";
-import {Observable} from "rxjs/Observable";
-import {merge} from "rxjs/observable/merge";
-import {timer} from "rxjs/observable/timer";
-import {from} from "rxjs/observable/from";
-import {filter} from "rxjs/operators/filter";
-import {map} from "rxjs/operators/map";
-import {mergeMap} from "rxjs/operators/mergeMap";
-import {tap} from "rxjs/operators/tap";
-import {mapTo} from "rxjs/operators/mapTo";
+import {empty} from "rxjs/";
+import {Observable} from "rxjs";
+import {merge} from "rxjs";
+import {timer} from "rxjs";
+import {from} from "rxjs";
+import {filter} from "rxjs/operators";
+import {map} from "rxjs/operators";
+import {mergeMap} from "rxjs/operators";
+import {tap} from "rxjs/operators";
+import {mapTo} from "rxjs/operators";
 import {propSet} from "../lib/dom-effects/prop-set.dom-effect";
 import {styleSet} from "../lib/dom-effects/style-set.dom-effect";
 import {linkReplace} from "../lib/dom-effects/link-replace.dom-effect";
-import {mergeAll} from "rxjs/operators/mergeAll";
+import {mergeAll} from "rxjs/operators";
 
 var hiddenElem;
 

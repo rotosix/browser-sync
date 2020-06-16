@@ -8,7 +8,7 @@ var utils = require("./public-utils");
  * @param emitter
  * @returns {Function}
  */
-module.exports = function(emitter) {
+module.exports = function (emitter) {
     /**
      * Return a transform/through stream that listens to file
      * paths and fires internal Browsersync events.
@@ -22,7 +22,7 @@ module.exports = function(emitter) {
         var reload = new Transform({ objectMode: true });
         var changed = [];
 
-        reload._transform = function(file, encoding, next) {
+        reload._transform = function (file, encoding, next) {
             var stream = this;
 
             /**
@@ -75,7 +75,7 @@ module.exports = function(emitter) {
          * @param next
          * @private
          */
-        reload._flush = function(next) {
+        reload._flush = function (next) {
             if (changed.length) {
                 utils.emitStreamChangedEvent(emitter, changed);
             }

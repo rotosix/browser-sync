@@ -2,22 +2,22 @@ var browserSync = require("../../../../");
 var request = require("supertest");
 var assert = require("chai").assert;
 
-describe("E2E server test with serve static options", function() {
-    it("sets the index of serve-static", function(done) {
+describe("E2E server test with serve static options", function () {
+    it("sets the index of serve-static", function (done) {
         browserSync.reset();
 
         var config = {
             server: {
                 baseDir: "test/fixtures",
                 serveStaticOptions: {
-                    index: "inputs.html"
-                }
+                    index: "inputs.html",
+                },
             },
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
-        browserSync.create().init(config, function(err, bs) {
+        browserSync.create().init(config, function (err, bs) {
             assert.equal(
                 bs.options.getIn(["server", "serveStaticOptions", "index"]),
                 "inputs.html"
@@ -25,7 +25,7 @@ describe("E2E server test with serve static options", function() {
             request(bs.server)
                 .get("/")
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     assert.deepEqual(
                         require("fs").readFileSync(
                             "test/fixtures/inputs.html",
@@ -38,19 +38,19 @@ describe("E2E server test with serve static options", function() {
                 });
         });
     });
-    it("sets uses the default for serve static index", function(done) {
+    it("sets uses the default for serve static index", function (done) {
         browserSync.reset();
 
         var config = {
             server: {
                 baseDir: "test/fixtures",
-                serveStaticOptions: {}
+                serveStaticOptions: {},
             },
             logLevel: "silent",
-            open: false
+            open: false,
         };
 
-        browserSync.create().init(config, function(err, bs) {
+        browserSync.create().init(config, function (err, bs) {
             assert.equal(
                 bs.options.getIn(["server", "serveStaticOptions", "index"]),
                 "index.html"
@@ -58,7 +58,7 @@ describe("E2E server test with serve static options", function() {
             request(bs.server)
                 .get("/")
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     assert.deepEqual(
                         require("fs").readFileSync(
                             "test/fixtures/index.html",

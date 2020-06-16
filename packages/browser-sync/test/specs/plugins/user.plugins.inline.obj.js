@@ -2,11 +2,11 @@ var browserSync = require("../../../");
 
 var assert = require("chai").assert;
 
-describe("Plugins: Retrieving user plugins when given inline as object", function() {
+describe("Plugins: Retrieving user plugins when given inline as object", function () {
     var instance;
     var PLUGIN_NAME = "Test Plugin";
 
-    it("has access to user options", function(done) {
+    it("has access to user options", function (done) {
         browserSync.reset();
 
         var config = {
@@ -14,17 +14,17 @@ describe("Plugins: Retrieving user plugins when given inline as object", functio
             plugins: [
                 {
                     module: {
-                        plugin: function() {},
-                        "plugin:name": PLUGIN_NAME
+                        plugin: function () {},
+                        "plugin:name": PLUGIN_NAME,
                     },
                     options: {
-                        files: "*.html"
-                    }
-                }
-            ]
+                        files: "*.html",
+                    },
+                },
+            ],
         };
 
-        browserSync(config, function(err, bs) {
+        browserSync(config, function (err, bs) {
             assert.equal(bs.getUserPlugins().length, 1);
             var plugin = bs.getUserPlugins()[0];
             assert.equal(plugin.name, PLUGIN_NAME);

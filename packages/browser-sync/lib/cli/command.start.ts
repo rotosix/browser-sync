@@ -14,7 +14,7 @@ const _ = require("../lodash.custom");
  * @param opts
  * @returns {Function}
  */
-export default function(opts) {
+export default function (opts) {
     const flags = preprocessFlags(opts.cli.flags);
     const cwd = flags.cwd || process.cwd();
     const maybepkg = path.resolve(cwd, "package.json");
@@ -42,9 +42,7 @@ export default function(opts) {
         }
     }
 
-    return require("../")
-        .create("cli")
-        .init(input, opts.cb);
+    return require("../").create("cli").init(input, opts.cb);
 }
 
 /**
@@ -55,7 +53,7 @@ function preprocessFlags(flags) {
     return [
         stripUndefined,
         legacyFilesArgs,
-        removeWatchBooleanWhenFalse
+        removeWatchBooleanWhenFalse,
     ].reduce((flags, fn) => fn.call(null, flags), flags);
 }
 
@@ -98,9 +96,7 @@ function legacyFilesArgs(flags) {
  */
 function removeWatchBooleanWhenFalse(flags) {
     if (flags.watch === false) {
-        return fromJS(flags)
-            .delete("watch")
-            .toJS();
+        return fromJS(flags).delete("watch").toJS();
     }
     return flags;
 }
