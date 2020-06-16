@@ -25,14 +25,6 @@ tasks:
   lint: >
     @npm prettier
     lib/**/*
-    examples/*
-    test/specs/**/*
-    test/specs/*.js
-    client/lib/*
-    client/lib/messages/*
-    client/lib/dom-effects/*
-    client/lib/effects/*
-    client/lib/listeners/*
     --write --tab-width 4
 
   cli: cypress/setup/bs-cli.js

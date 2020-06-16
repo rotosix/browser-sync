@@ -26,6 +26,9 @@ export function handleServerOption(incoming: BsTempOptions): TransformResult {
 
     if (List.isList(value)) {
         const obj: IServerOption = {
+            // FIXME: TS2739: Type 'List<any>' is missing the following properties from type 'string[]':
+            //  length, fill, copyWithin, [Symbol.unscopables]
+            // @ts-ignore
             baseDir: value,
         };
         return [incoming.set("server", fromJS(obj)), []];
