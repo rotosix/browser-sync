@@ -238,10 +238,10 @@ function isList(item) {
 function listMerge(list, item) {
     if (_.isFunction(item)) {
         list = list.push(item);
-    }
-
-    if (isList(item) && item.size) {
+    } else if (isList(item) && item.size) {
         list = list.merge(item);
+    } else {
+        item.filter(fn => _.isFunction(fn)).forEach(fn => list = list.push(fn));
     }
 
     return list;
