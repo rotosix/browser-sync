@@ -41,8 +41,8 @@ export function getFormInputStream(
                 filter(([, canSync]) => Boolean(canSync)),
                 map(([eventTarget]) => {
                     const target = getElementData(eventTarget);
-                    const value = eventTarget.nodeValue;
-
+                    // @ts-ignore
+                    const value = eventTarget.value;
                     return KeyupEvent.outgoing(target, value);
                 })
             );
